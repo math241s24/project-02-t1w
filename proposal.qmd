@@ -1,7 +1,7 @@
 ---
 title: "Project 2"
 subtitle: "Proposal"
-authors: ""
+authors: "James Aas, Audrey Mills, Jameson Oates"
 format: html
 editor: visual
 ---
@@ -23,8 +23,6 @@ library(tidyverse)
 ## read data 
 ```
 
-
 ## Reason for Choosing this Dataset
-
 
 ## Questions and Analysis Plan
