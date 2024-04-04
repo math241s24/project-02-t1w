@@ -25,4 +25,8 @@ library(tidyverse)
 
 ## Reason for Choosing this Dataset
 
+We are interested in exploring the relationship between sanctuary cities and immigration, especially those in the South Atlantic and East South Central regions of the US (Kentucky, West Virginia, Virginia Maryland Delaware DC, Tennessee, North Carolina, South Carolina Georgia, Alabama, Mississippi, and Florida). We will focus on numbers of incomers within and around sanctuary cities, as well as their change over time (between roughly 2013-2022). We are also curious if the number of immigrants compared to nonimmigrants arriving to the city changes based on the city's immigration policy. We will incorporate introduction of different immigration policies into our analysis in order to determine correlations between these policies and immigration to the South.
+
 ## Questions and Analysis Plan
+
+Our primary research question is: How does a city's status as a sanctuary city affect the number of incoming immigrants compared to nonimmigrants, and how has this relationship changed over time?
