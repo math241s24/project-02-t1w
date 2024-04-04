@@ -1,0 +1,51 @@
+[
+  {
+    "objectID": "proposal.html",
+    "href": "proposal.html",
+    "title": "Project 2",
+    "section": "",
+    "text": "library(tidyverse)"
+  },
+  {
+    "objectID": "proposal.html#dataset",
+    "href": "proposal.html#dataset",
+    "title": "Project 2",
+    "section": "Dataset",
+    "text": "Dataset\n\n## read data"
+  },
+  {
+    "objectID": "proposal.html#reason-for-choosing-this-dataset",
+    "href": "proposal.html#reason-for-choosing-this-dataset",
+    "title": "Project 2",
+    "section": "Reason for Choosing this Dataset",
+    "text": "Reason for Choosing this Dataset"
+  },
+  {
+    "objectID": "proposal.html#questions-and-analysis-plan",
+    "href": "proposal.html#questions-and-analysis-plan",
+    "title": "Project 2",
+    "section": "Questions and Analysis Plan",
+    "text": "Questions and Analysis Plan"
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "Your project title",
+    "section": "",
+    "text": "This project was developed by XX. For MATH/STAT241 at Reed College. The team is comprised of the following team members."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "project-02",
+    "section": "",
+    "text": "This is a Quarto website.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites.\n\n1 + 1\n\n[1] 2"
+  },
+  {
+    "objectID": "index.html#introduction",
+    "href": "index.html#introduction",
+    "title": "",
+    "section": "Introduction",
+    "text": "Introduction"
+  }
+]

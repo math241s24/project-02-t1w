@@ -1,0 +1,14 @@
+{
+  "hash": "f4048486ed74dedf40e90017056b0789",
+  "result": {
+    "markdown": "---\ntitle: \"Project 2\"\nsubtitle: \"Proposal\"\nauthors: \"\"\nformat: html\neditor: visual\n---\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(tidyverse)\n```\n:::\n\n\n## Dataset\n\n\n::: {.cell}\n\n```{.r .cell-code}\n## read data \n```\n:::\n\n\n\n## Reason for Choosing this Dataset\n\n\n## Questions and Analysis Plan\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

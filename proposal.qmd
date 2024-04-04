@@ -1,0 +1,30 @@
+---
+title: "Project 2"
+subtitle: "Proposal"
+authors: ""
+format: html
+editor: visual
+---
+
+```{r load-packages}
+#| label: load-pkgs
+#| message: false
+#| warning: false
+
+library(tidyverse)
+```
+
+## Dataset
+
+```{r load-data}
+#| label: load-data
+#| message: false
+
+## read data 
+```
+
+
+## Reason for Choosing this Dataset
+
+
+## Questions and Analysis Plan

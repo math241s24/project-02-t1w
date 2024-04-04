@@ -1,0 +1,7 @@
+---
+title: "Your project title"
+format: html
+editor: visual
+---
+
+This project was developed by XX. For [MATH/STAT241](https://aallorant.github.io/math241s24/) at Reed College. The team is comprised of the following team members.

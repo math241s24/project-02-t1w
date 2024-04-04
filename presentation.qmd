@@ -1,0 +1,37 @@
+---
+title: "Project title"
+subtitle: "Project 2"
+author: "Team"
+title-slide-attributes:
+  data-slide-number: none
+format: revealjs
+editor: visual
+execute:
+  echo: false
+---
+
+```{r}
+#| label: load-packages
+#| include: false
+
+library(tidyverse)
+```
+
+```{r}
+#| label: setup
+#| include: false
+
+# For better figure resolution
+knitr::opts_chunk$set(
+  fig.retina = 3, 
+  dpi = 300, 
+  fig.width = 6, 
+  fig.asp = 0.618, 
+  out.width = "70%"
+  )
+```
+
+```{r}
+#| label: load-data
+#| include: false
+```
