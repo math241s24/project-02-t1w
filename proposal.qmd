@@ -23,13 +23,15 @@ library(tidyverse)
 ## read data 
 ```
 
-## Reason for Choosing this Dataset 
-
-We are interested in exploring the relationship between sanctuary cities and immigration, especially those in the South Atlantic and East South Central regions of the US (Kentucky, West Virginia, Virginia Maryland Delaware DC, Tennessee, North Carolina, South Carolina Georgia, Alabama, Mississippi, and Florida). We will focus on numbers of incomers within and around sanctuary cities, as well as their change over time (between roughly 2013-2022). We are also curious if the number of immigrants compared to nonimmigrants arriving to the city changes based on the city's immigration policy. We will incorporate introduction of different immigration policies into our analysis in order to determine correlations between these policies and immigration to the South.
+## Reason for Choosing this Dataset
 
 *High level goal:* To gather data from online repositories regarding immigration and immigration policy, and use it to create a spacial-temporal visualization illustrating our topic of interest in a clear and concise fashion.
 
-## Questions and Analysis Plan 
+We are interested in exploring the relationship between sanctuary cities and immigration, especially those in the South Atlantic and East South Central regions of the US (Kentucky, West Virginia, Virginia, Maryland, Delaware, DC, Tennessee, North Carolina, South Carolina, Georgia, Alabama, Mississippi, and Florida). We will focus on numbers of incomers within and around sanctuary cities, as well as their change over time (between roughly 2013-2022). We are also curious if the number of immigrants compared to nonimmigrants arriving to the city changes based on the city's immigration policy. We will incorporate introduction of different immigration policies into our analysis in order to determine correlations between these policies and immigration to the South.
+
+*Description of Dataset:* This dataset contains data on immigration from the Department of Homeland Security (DHS). It groups immigration data by state, reporting on the number of lawful permanent residents (and their rank compared to other states), as well as the number of nonimmigrants, naturalizations, refugees, and asylees over the past ten years. We are pulling the data relevant to the states in our region of interest (Kentucky, West Virginia, Virginia, Maryland, Delaware, DC, Tennessee, North Carolina, South Carolina, Georgia, Alabama, Mississippi, and Florida).
+
+## Questions and Analysis Plan
 
 Our primary research question is: How does a city's status as a sanctuary city affect the number of incoming immigrants compared to nonimmigrants, and how has this relationship changed over time?
 
