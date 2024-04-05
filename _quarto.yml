@@ -2,11 +2,11 @@ project:
   type: website
 
 website:
-  title: Project 2
+  title: The Data of Sanctuary Cities
   navbar:
     right:
       - icon: github
-        href: https://github.com/math241s24/project-02
+        href: https://github.com/math241s24/project-02-t1w/tree/main
     left:
       - text: Project
         href: index.qmd

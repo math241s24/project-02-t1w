@@ -1,8 +1,10 @@
 {
-  "hash": "14302d535e683e425bd69799b22e98a7",
+  "hash": "cf38dcfc5ecf3d7cceaa13287637bdfc",
   "result": {
-    "markdown": "---\ntitle: \"project-02\"\n---\n\n\nThis is a Quarto website.\n\nTo learn more about Quarto websites visit <https://quarto.org/docs/websites>.\n\n\n::: {.cell}\n\n```{.r .cell-code}\n1 + 1\n```\n\n::: {.cell-output .cell-output-stdout}\n```\n[1] 2\n```\n:::\n:::\n",
-    "supporting": [],
+    "markdown": "---\ntitle: \"\"\nsubtitle: \"Project 2\"\nauthor: \"James Aas, Audrey Mills, Jameson Oates\"\nformat: html\neditor: visual\nexecute:\n  echo: false\n  warning: false\n  message: false\n---\n\n\n## Abstract\n\n## Introduction\n\n\n::: {.cell}\n\n:::\n",
+    "supporting": [
+      "index_files"
+    ],
     "filters": [
       "rmarkdown/pagebreak.lua"
     ],

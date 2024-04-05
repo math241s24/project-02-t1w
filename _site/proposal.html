@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.353">
+<meta name="generator" content="quarto-1.3.450">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Project 2</title>
+<title>The Data of Sanctuary Cities</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -89,7 +89,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
     "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit"
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
   }
 }</script>
 
@@ -104,7 +105,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container">
     <a class="navbar-brand" href="./index.html">
-    <span class="navbar-title">Project 2</span>
+    <span class="navbar-title">The Data of Sanctuary Cities</span>
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
@@ -132,7 +133,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/math241s24/project-02" rel="" target=""><i class="bi bi-github" role="img">
+    <a class="nav-link" href="https://github.com/math241s24/project-02-t1w/tree/main" rel="" target=""><i class="bi bi-github" role="img">
 </i> 
  <span class="menu-text"></span></a>
   </li>  
@@ -155,6 +156,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#dataset" id="toc-dataset" class="nav-link active" data-scroll-target="#dataset">Dataset</a></li>
   <li><a href="#reason-for-choosing-this-dataset" id="toc-reason-for-choosing-this-dataset" class="nav-link" data-scroll-target="#reason-for-choosing-this-dataset">Reason for Choosing this Dataset</a></li>
   <li><a href="#questions-and-analysis-plan" id="toc-questions-and-analysis-plan" class="nav-link" data-scroll-target="#questions-and-analysis-plan">Questions and Analysis Plan</a></li>
+  <li><a href="#weekly-plan-of-attack" id="toc-weekly-plan-of-attack" class="nav-link" data-scroll-target="#weekly-plan-of-attack">Weekly Plan of Attack</a></li>
   </ul>
 </nav>
     </div>
@@ -163,7 +165,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Project 2</h1>
+<h1 class="title">The Data of Sanctuary Cities</h1>
 <p class="subtitle lead">Proposal</p>
 </div>
 
@@ -174,7 +176,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Author</div>
     <div class="quarto-title-meta-contents">
-             <p> </p>
+             <p>James Aas, Audrey Mills, Jameson Oates </p>
           </div>
   </div>
     
@@ -186,19 +188,49 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(leaflet)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tmap)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="dataset" class="level2">
 <h2 class="anchored" data-anchor-id="dataset">Dataset</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="do">## read data </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>immigration <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/2023_0824_plcy_state_immigration_data_sheets_fy2022.csv"</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(immigration)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 16
+  ...1   ...2  ...3  ...4  ...5  ...6  ...7  ...8  ...9  ...10 ...11 ...12 ...13
+  &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;
+1 Flori… &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt; 
+2 Year   Popu… Lawf… &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  Noni… &lt;NA&gt;  Natu… &lt;NA&gt;  Refu…
+3 &lt;NA&gt;   &lt;NA&gt;  Total Rank  New … Rank  Adju… Rank  Total Rank  Total Rank  Total
+4 2013   19,5… 102,… 3     39,0… 4     63,8… 2     8,08… 2     101,… 3     3,613
+5 2014   19,8… 109,… 3     37,0… 4     72,2… 2     9,18… 2     79,6… 2     3,519
+6 2015   20,2… 118,… 3     39,1… 4     79,7… 2     10,2… 2     81,9… 3     2,478
+# ℹ 3 more variables: ...14 &lt;chr&gt;, ...15 &lt;chr&gt;, ...16 &lt;chr&gt;</code></pre>
+</div>
 </div>
 </section>
 <section id="reason-for-choosing-this-dataset" class="level2">
 <h2 class="anchored" data-anchor-id="reason-for-choosing-this-dataset">Reason for Choosing this Dataset</h2>
+<p><em>High level goal:</em> To gather data from online repositories regarding immigration and immigration policy, and use it to create a spacial-temporal visualization illustrating our topic of interest in a clear and concise fashion.</p>
+<p>We are interested in exploring the relationship between sanctuary cities and immigration, especially those in the South Atlantic and East South Central regions of the US (Kentucky, West Virginia, Virginia, Maryland, Delaware, DC, Tennessee, North Carolina, South Carolina, Georgia, Alabama, Mississippi, and Florida). We will focus on numbers of incomers within and around sanctuary cities, as well as their change over time (between roughly 2013-2022). We are also curious if the number of immigrants compared to nonimmigrants arriving to the city changed based on the city’s immigration policy. We will incorporate the introduction of different immigration policies into our analysis in order to determine correlations between these policies and immigration to the South.</p>
+<p><em>Description of Dataset:</em> This dataset contains data on immigration from the Department of Homeland Security (DHS). It groups immigration data by state, reporting on the number of lawful permanent residents (and their rank compared to other states), as well as the number of nonimmigrants, naturalizations, refugees, and asylees over the past ten years. We are pulling the data relevant to the states in our region of interest (Kentucky, West Virginia, Virginia, Maryland, Delaware, DC, Tennessee, North Carolina, South Carolina, Georgia, Alabama, Mississippi, and Florida). We will use the variables for total arrival counts of various types of immigrants, as well as years, to find the correlation between immigration and immigration policy and determine the effect, if any, that policy has on immigration to the South.</p>
 </section>
 <section id="questions-and-analysis-plan" class="level2">
 <h2 class="anchored" data-anchor-id="questions-and-analysis-plan">Questions and Analysis Plan</h2>
+<p>Our primary research question is: How does a city’s status as a sanctuary city affect the number of incoming immigrants compared to nonimmigrants, and how has this relationship changed over time?</p>
+</section>
+<section id="weekly-plan-of-attack" class="level2">
+<h2 class="anchored" data-anchor-id="weekly-plan-of-attack">Weekly Plan of Attack</h2>
+<p><em>Week 10</em> - Submit proposal.qmd, research changes in sanctuary state policy between 2013-2022 in the states we’ve chosen, for the purpose of visualizing.</p>
+<p><em>Week 11</em> - Wrangle dataset, will include removing rows, using a handful of pivot_longer functions, etc. Update proposal and project to include feedback from peers. We will work to create visualizations tied to geospatial data. The sanctuary state visualization will also be conducted. Outline the writeup.</p>
+<p><em>Week 12</em> - Complete work on the writeup, which will go in the index.qmd file. This will be done by all group members. Begin work on presentation.qmd.</p>
+<p><em>Week 13</em> - Touch up the presentation.qmd file, practice the presentation to ensure it fits within time constraints.</p>
 
 
 </section>
