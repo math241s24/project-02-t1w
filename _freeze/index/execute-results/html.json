@@ -1,5 +1,5 @@
 {
-  "hash": "cf38dcfc5ecf3d7cceaa13287637bdfc",
+  "hash": "9c0f760245a1fcc0a9883e797a955436",
   "result": {
     "markdown": "---\ntitle: \"\"\nsubtitle: \"Project 2\"\nauthor: \"James Aas, Audrey Mills, Jameson Oates\"\nformat: html\neditor: visual\nexecute:\n  echo: false\n  warning: false\n  message: false\n---\n\n\n## Abstract\n\n## Introduction\n\n\n::: {.cell}\n\n:::\n",
     "supporting": [

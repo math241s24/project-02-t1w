@@ -1,8 +1,10 @@
 {
-  "hash": "db259544fb70801276df520cf81aea96",
+  "hash": "462229d93f9001b08b655506c2fda5a1",
   "result": {
     "markdown": "---\ntitle: \"Project title\"\nsubtitle: \"Project 2\"\nauthor: \"Team\"\ntitle-slide-attributes:\n  data-slide-number: none\nformat: revealjs\neditor: visual\nexecute:\n  echo: false\n---\n\n\n\n\n\n\n",
-    "supporting": [],
+    "supporting": [
+      "presentation_files"
+    ],
     "filters": [
       "rmarkdown/pagebreak.lua"
     ],

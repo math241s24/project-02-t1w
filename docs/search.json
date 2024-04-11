@@ -1,0 +1,51 @@
+[
+  {
+    "objectID": "proposal.html",
+    "href": "proposal.html",
+    "title": "The Data of Sanctuary Cities",
+    "section": "",
+    "text": "library(tidyverse)\nlibrary(dplyr)\nlibrary(tidyr)\nlibrary(leaflet)\nlibrary(tmap)\nlibrary(readr)"
+  },
+  {
+    "objectID": "proposal.html#dataset",
+    "href": "proposal.html#dataset",
+    "title": "The Data of Sanctuary Cities",
+    "section": "Dataset",
+    "text": "Dataset\n\nimmigration &lt;- read_csv(\"data/2023_0824_plcy_state_immigration_data_sheets_fy2022.csv\")\n\nhead(immigration)\n\n# A tibble: 6 × 16\n  ...1   ...2  ...3  ...4  ...5  ...6  ...7  ...8  ...9  ...10 ...11 ...12 ...13\n  &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;\n1 Flori… &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt; \n2 Year   Popu… Lawf… &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  Noni… &lt;NA&gt;  Natu… &lt;NA&gt;  Refu…\n3 &lt;NA&gt;   &lt;NA&gt;  Total Rank  New … Rank  Adju… Rank  Total Rank  Total Rank  Total\n4 2013   19,5… 102,… 3     39,0… 4     63,8… 2     8,08… 2     101,… 3     3,613\n5 2014   19,8… 109,… 3     37,0… 4     72,2… 2     9,18… 2     79,6… 2     3,519\n6 2015   20,2… 118,… 3     39,1… 4     79,7… 2     10,2… 2     81,9… 3     2,478\n# ℹ 3 more variables: ...14 &lt;chr&gt;, ...15 &lt;chr&gt;, ...16 &lt;chr&gt;"
+  },
+  {
+    "objectID": "proposal.html#reason-for-choosing-this-dataset",
+    "href": "proposal.html#reason-for-choosing-this-dataset",
+    "title": "The Data of Sanctuary Cities",
+    "section": "Reason for Choosing this Dataset",
+    "text": "Reason for Choosing this Dataset\nHigh level goal: To gather data from online repositories regarding immigration and immigration policy, and use it to create a spacial-temporal visualization illustrating our topic of interest in a clear and concise fashion.\nWe are interested in exploring the relationship between sanctuary cities and immigration, especially those in the South Atlantic and East South Central regions of the US (Kentucky, West Virginia, Virginia, Maryland, Delaware, DC, Tennessee, North Carolina, South Carolina, Georgia, Alabama, Mississippi, and Florida). We will focus on numbers of incomers within and around sanctuary cities, as well as their change over time (between roughly 2013-2022). We are also curious if the number of immigrants compared to nonimmigrants arriving to the city changed based on the city’s immigration policy. We will incorporate the introduction of different immigration policies into our analysis in order to determine correlations between these policies and immigration to the South.\nDescription of Dataset: This dataset contains data on immigration from the Department of Homeland Security (DHS). It groups immigration data by state, reporting on the number of lawful permanent residents (and their rank compared to other states), as well as the number of nonimmigrants, naturalizations, refugees, and asylees over the past ten years. We are pulling the data relevant to the states in our region of interest (Kentucky, West Virginia, Virginia, Maryland, Delaware, DC, Tennessee, North Carolina, South Carolina, Georgia, Alabama, Mississippi, and Florida). We will use the variables for total arrival counts of various types of immigrants, as well as years, to find the correlation between immigration and immigration policy and determine the effect, if any, that policy has on immigration to the South."
+  },
+  {
+    "objectID": "proposal.html#questions-and-analysis-plan",
+    "href": "proposal.html#questions-and-analysis-plan",
+    "title": "The Data of Sanctuary Cities",
+    "section": "Questions and Analysis Plan",
+    "text": "Questions and Analysis Plan\nOur primary research question is: How does a city’s status as a sanctuary city affect the number of incoming immigrants compared to nonimmigrants, and how has this relationship changed over time?"
+  },
+  {
+    "objectID": "proposal.html#weekly-plan-of-attack",
+    "href": "proposal.html#weekly-plan-of-attack",
+    "title": "The Data of Sanctuary Cities",
+    "section": "Weekly Plan of Attack",
+    "text": "Weekly Plan of Attack\nWeek 10 - Submit proposal.qmd, research changes in sanctuary state policy between 2013-2022 in the states we’ve chosen, for the purpose of visualizing.\nWeek 11 - Wrangle and tidy dataset, will include removing rows, using a handful of pivot_longer functions, etc. Update proposal and project to include feedback from peers. We will work to create visualizations tied to geospatial data. The sanctuary state visualization will also be conducted. Outline the writeup.\nWeek 12 - Complete work on the writeup, which will go in the index.qmd file. This will be done by all group members. Begin work on presentation.qmd.\nWeek 13 - Touch up the presentation.qmd file, practice the presentation to ensure it fits within time constraints."
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "The Data of Sanctuary Cities",
+    "section": "",
+    "text": "This project was developed by Team T1W. For MATH/STAT241 at Reed College. The team is comprised of the following team members: James Aas, Audrey Mills, Jameson Oates"
+  },
+  {
+    "objectID": "index.html#introduction",
+    "href": "index.html#introduction",
+    "title": "",
+    "section": "Introduction",
+    "text": "Introduction"
+  }
+]
