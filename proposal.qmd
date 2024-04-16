@@ -25,9 +25,10 @@ library(readr)
 #| label: load-data
 #| message: false
 
-immigration <- read_csv("data/2023_0824_plcy_state_immigration_data_sheets_fy2022.csv")
+presidential_election_data <- read.csv("data/presidential_election_data.csv")
+View(presidential_election_data)
 
-head(immigration)
+head(presidential_election_data)
 ```
 
 ## Reason for Choosing this Dataset
