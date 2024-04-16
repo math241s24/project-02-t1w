@@ -1,5 +1,5 @@
 ---
-title: "Project title"
+title: "The Attractiveness of Cities"
 subtitle: "Project 2"
 author: "Team"
 title-slide-attributes:

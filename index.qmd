@@ -1,5 +1,5 @@
 ---
-title: ""
+title: "The Attractiveness of Cities"
 subtitle: "Project 2"
 author: "James Aas, Audrey Mills, Jameson Oates"
 format: html

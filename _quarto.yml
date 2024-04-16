@@ -3,7 +3,7 @@ project:
   output-dir: docs
 
 website:
-  title: The Data of Sanctuary Cities
+  title: The Attractiveness of Cities
   navbar:
     right:
       - icon: github
