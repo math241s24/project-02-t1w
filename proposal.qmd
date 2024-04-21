@@ -31,7 +31,7 @@ state_economic_data <- read.csv("data/state_economic_data.csv")
 
 state_abortion_data <- read.csv("data/abortion_dataset.csv")
 
-state_immigration_data <- read.csv("data/2023_0824_plcy_state_immigration_data_sheets_fy2022.csv")
+state_immigration_data <- read.csv("data/interstate_migration_data.csv")
 
 
 
