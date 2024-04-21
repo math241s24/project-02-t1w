@@ -19,19 +19,22 @@ library(tmap)
 library(readr)
 ```
 
-## Dataset
+## Datasets
 
 ```{r load-data}
 #| label: load-data
 #| message: false
 
 presidential_election_data <- read.csv("data/presidential_election_data.csv")
-View(presidential_election_data)
 
-head(presidential_election_data)
-```
+state_economic_data <- read.csv("data/state_economic_data.csv")
 
-```{r}
+state_abortion_data <- read.csv("data/abortion_dataset.csv")
+
+state_immigration_data <- read.csv("data/2023_0824_plcy_state_immigration_data_sheets_fy2022.csv")
+
+
+
 state <- c("Alabama", "Alaska", "Arizona",
 "Arkansas",
 "California",
@@ -112,6 +115,9 @@ political_culture <- c("Traditionalistic", "Individualistic", "Traditionalistic"
 political_culture_elazar<- data.frame(state, political_culture)
 political_culture_elazar
   
+
+head(presidential_election_data)
+
 ```
 
 ```{r}
