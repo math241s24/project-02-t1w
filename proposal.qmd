@@ -114,6 +114,11 @@ political_culture_elazar
   
 ```
 
+```{r}
+d1_d2 <- full_join(political_culture_elazar, presidential_election_data, by = c("state" = "STATE"))
+d1_d2
+```
+
 ## Reason for Choosing this Dataset
 
 *High level goal:* To gather data from online repositories regarding immigration and immigration policy, and use it to create a spacial-temporal visualization illustrating our topic of interest in a clear and concise fashion.
