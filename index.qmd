@@ -15,5 +15,52 @@ execute:
 ## Introduction
 
 ```{r}
+library(leaflet)
 
+```
+
+```{r}
+library(usmap)
+statepov <- statepov
+countypov <- countypov
+statep <- countypov %>% group_by(abbr) %>%
+summarize(avgpov = mean(pct_pov_2021))
+statep <- statep %>% 
+  rename(
+    state = abbr)
+
+
+plot_usmap(data = statepov, values = "pct_pov_2021", include = c(), color = "blue") + scale_fill_continuous(low = "white", high = "blue", name = "Poverty Percentage Estimates", label = scales::comma) + labs(title = "hurah", subtitle = "using the internets dataset") + theme(legend.position = "right")
+
+plot_usmap(data = statep, values = "avgpov", include = c(), color = "blue") + scale_fill_continuous(low = "white", high = "blue", name = "Poverty Percentage Estimates", label = scales::comma) + labs(title = "hurah", subtitle = "using my dataset (that came from the internet dataset") + theme(legend.position = "right")
+
+
+```
+
+```{r}
+state_economic_data <- state_economic_data %>% rename(
+  state = State
+) %>% drop_na()
+```
+
+```{r}
+state_economic_data2020 <- state_economic_data %>% filter(Year == "2020") 
+state_economic_data2020 <- state_economic_data2020[-c(1, 10), ]
+  plot_usmap(data = state_economic_data2020, values = "Name")
+  
+  
+```
+
+```{r}
+state_economic_data_no_dc <- state_economic_data [-c(1, 10, 53, 62, 114, 105, 166, 157), ]
+```
+
+```{r}
+plot_usmap(data = state_economic_data_no_dc, values = "Name")
+```
+
+```{r}
+leaflet(state_economic_data_no_dc) %>%
+  addTiles() %>%
+  addPolygons()
 ```
