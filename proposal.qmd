@@ -131,7 +131,6 @@ state_abortion_data <- state_abortion_data %>%
     Year = 6
   ) %>%
   mutate(
-    Area = ifelse(Area %in% c("†", "¶", "*", "§", "—†††", "—§§§", "---", "--***", "---***", "---†††"), NA, Number)
     Number = ifelse(Number %in% c("N/A", "—¶¶", "—***", "—", "—†††", "—§§§", "---", "--***", "---***", "---†††"), NA, Number),
     Rate = ifelse(Rate %in% c("N/A", "—¶¶", "—***", "—", "—†††", "—§§§", "---", "--***", "	
 ---***", "---†††"), NA, Rate),
@@ -139,6 +138,7 @@ state_abortion_data <- state_abortion_data %>%
     `Out-of-State (number and percentage)` = ifelse(`Out-of-State (number and percentage)` %in% c("N/A", "—¶¶", "—***", "—", "—†††", "—§§§", "---", "--***", "	---***", "---†††"), NA, `Out-of-State (number and percentage)`)
   )  %>%
   filter(!(Number %in% c("25,619", "30,555", "35,398", "37,523", "73,815", "89,469", "59,854", "27,471")))
+state_abortion_data
 ```
 
 ```{r}
