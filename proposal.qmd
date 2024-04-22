@@ -117,7 +117,28 @@ political_culture_elazar
   
 
 head(presidential_election_data)
+```
 
+```{r}
+state_abortion_data <- state_abortion_data %>%
+  slice(-(1:6)) %>%
+  rename(
+    Area = 1,
+    Number = 2,
+    Rate = 3,
+    Ratio = 4,
+    `Out-of-State (number and percentage)` = 5,
+    Year = 6
+  ) %>%
+  mutate(
+    Area = ifelse(Area %in% c("†", "¶", "*", "§", "—†††", "—§§§", "---", "--***", "---***", "---†††"), NA, Number)
+    Number = ifelse(Number %in% c("N/A", "—¶¶", "—***", "—", "—†††", "—§§§", "---", "--***", "---***", "---†††"), NA, Number),
+    Rate = ifelse(Rate %in% c("N/A", "—¶¶", "—***", "—", "—†††", "—§§§", "---", "--***", "	
+---***", "---†††"), NA, Rate),
+    Ratio = ifelse(Ratio %in% c("N/A", "—¶¶", "—***", "—", "—†††", "—§§§", "---", "--***", "---***", "---†††"), NA, Ratio),
+    `Out-of-State (number and percentage)` = ifelse(`Out-of-State (number and percentage)` %in% c("N/A", "—¶¶", "—***", "—", "—†††", "—§§§", "---", "--***", "	---***", "---†††"), NA, `Out-of-State (number and percentage)`)
+  )  %>%
+  filter(!(Number %in% c("25,619", "30,555", "35,398", "37,523", "73,815", "89,469", "59,854", "27,471")))
 ```
 
 ```{r}
