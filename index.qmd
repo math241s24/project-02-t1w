@@ -38,7 +38,7 @@ presidential_election_data <- read.csv("data/presidential_election_data.csv")
 
 state_economic_data <- read.csv("data/state_economic_data.csv")
 
-state_abortion_data <- read.csv("data/abortion_dataset.csv")
+state_abortion_data <- read.csv("data/abortions_dataset.csv")
 
 state_immigration_data <- read.csv("data/interstate_migration_data.csv")
 
@@ -155,7 +155,7 @@ head(presidential_election_data)
 
 ```{r}
 state_abortion_data <- state_abortion_data %>%
-  slice(-(1:6)) %>%
+  slice(-(1:1)) %>%
   rename(
     Area = 1,
     Number = 2,
@@ -302,34 +302,6 @@ plot_usmap(data = statepov, values = "pct_pov_2021", include = c(), color = "blu
 plot_usmap(data = statep, values = "avgpov", include = c(), color = "blue") + scale_fill_continuous(low = "white", high = "blue", name = "Poverty Percentage Estimates", label = scales::comma) + labs(title = "hurah", subtitle = "using my dataset (that came from the internet dataset") + theme(legend.position = "right")
 
 
-```
-
-```{r}
-state_economic_data <- state_economic_data %>% rename(
-  state = State
-) %>% drop_na()
-```
-
-```{r}
-state_economic_data2020 <- state_economic_data %>% filter(Year == "2020") 
-state_economic_data2020 <- state_economic_data2020[-c(1, 10), ]
-  plot_usmap(data = state_economic_data2020, values = `Median Household Income`)
-  
-  
-```
-
-```{r}
-state_economic_data_no_dc <- state_economic_data [-c(1, 10, 53, 62, 114, 105, 166, 157), ]
-```
-
-```{r}
-plot_usmap(data = state_economic_data_no_dc, values = "Name")
-```
-
-```{r}
-leaflet(state_economic_data_no_dc) %>%
-  addTiles() %>%
-  addPolygons()
 ```
 
 ```{r}
