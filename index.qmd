@@ -146,9 +146,8 @@ political_culture <- c("Traditionalistic",
                        "Moralistic", 
                        "Individualistic")
 
-political_culture_elazar <- data.frame(state, political_culture)
-
-political_culture_elazar
+political_culture_elazar <- data.frame(state, political_culture) %>%
+  mutate(state = tolower(state))
 
 head(presidential_election_data)
 ```
@@ -165,46 +164,10 @@ state_abortion_data <- state_abortion_data %>%
     Year = 6
   ) %>%
   mutate(
-    Number = ifelse(Number %in% c("N/A", 
-                                  "—¶¶", 
-                                  "—***", 
-                                  "—", 
-                                  "—†††", 
-                                  "—§§§", 
-                                  "---", 
-                                  "--***", 
-                                  "---***", 
-                                  "---†††"), NA, Number),
-    Rate = ifelse(Rate %in% c("N/A", 
-                              "—¶¶", 
-                              "—***", 
-                              "—", 
-                              "—†††", 
-                              "—§§§", 
-                              "---", 
-                              "--***", 
-                              "---***", 
-                              "---†††"), NA, Rate),
-    Ratio = ifelse(Ratio %in% c("N/A", 
-                                "—¶¶", 
-                                "—***", 
-                                "—", 
-                                "—†††", 
-                                "—§§§", 
-                                "---", 
-                                "--***", 
-                                "---***", 
-                                "---†††"), NA, Ratio),
-    `Out-of-State (number and percentage)` = ifelse(`Out-of-State (number and percentage)` %in% c("N/A",
-      "—¶¶",
-      "—***", 
-      "—", 
-      "—†††", 
-      "—§§§", 
-      "---", 
-      "--***", 
-      "---***", 
-      "---†††"), NA, `Out-of-State (number and percentage)`)
+    Number = ifelse(Number %in% c("N/A"), NA, Number),
+    Rate = ifelse(Rate %in% c("N/A"), NA, Rate),
+    Ratio = ifelse(Ratio %in% c("N/A"), NA, Ratio),
+    `Out-of-State (number and percentage)` = ifelse(`Out-of-State (number and percentage)` %in% c("N/A"), NA, `Out-of-State (number and percentage)`)
   )  %>%
   filter(!(Number %in% c("25,619", 
                          "30,555", 
@@ -216,7 +179,8 @@ state_abortion_data <- state_abortion_data %>%
                          "27,471"))) %>%
   mutate(Number = as.numeric(gsub(",", "", Number)), 
          Rate = as.numeric(gsub(",", "", Rate)),
-         Ratio = as.numeric(gsub(",", "", Ratio))
+         Ratio = as.numeric(gsub(",", "", Ratio)),
+         Year = as.numeric(gsub(",", "", Year))
          ) %>%
   mutate(Area = tolower(Area))
 head(state_abortion_data)
@@ -305,13 +269,13 @@ plot_usmap(data = statep, values = "avgpov", include = c(), color = "blue") + sc
 ```
 
 ```{r}
-data <- state_economic_data
+econ_data <- state_economic_data
 
-map_data <- map_data("state")
+econ_map_data <- map_data("state")
 
-merged_data <- merge(map_data, data, by.x = "region", by.y = "State", all.x = TRUE)
+econ_merged_data <- merge(econ_map_data, econ_data, by.x = "region", by.y = "State", all.x = TRUE)
 
-econ_animate <- ggplot(merged_data, aes(x = long, y = lat, group = group)) +
+econ_animate <- ggplot(econ_merged_data, aes(x = long, y = lat, group = group)) +
   geom_polygon(aes(fill = `Median Household Income`)) +
   scale_fill_gradient(name = "Median Household Income", low = "lightblue", high = "darkblue", na.value = "grey", guide = "legend") +
   theme_void() +
@@ -321,4 +285,38 @@ econ_animate <- ggplot(merged_data, aes(x = long, y = lat, group = group)) +
   theme(plot.title = element_text(hjust = 0.5))  
 
 animate(econ_animate, renderer = gifski_renderer())
+```
+
+```{r}
+abortion_data <- state_abortion_data
+
+abortion_map_data <- map_data("state")
+
+abortion_merged_data <- merge(abortion_map_data, abortion_data, by.x = "region", by.y = "Area", all.x = TRUE)
+
+abortion_animate <- ggplot(abortion_merged_data, aes(x = long, y = lat, group = group)) +
+  geom_polygon(aes(fill = Number)) +
+  scale_fill_gradient(name = "Abortions", low = "pink", high = "darkred", na.value = "grey", guide = "legend") +
+  theme_void() +
+  labs(subtitle = "Abortions by State Residents over Time", caption = "Source: CDC") +
+  transition_states(Year) +
+  labs(title = "Year: {closest_state}") + 
+  theme(plot.title = element_text(hjust = 0.5))  
+
+animate(abortion_animate, renderer = gifski_renderer())
+```
+
+```{r}
+political_data <- political_culture_elazar
+
+political_map_data <- map_data("state")
+
+political_merged_data <- merge(political_map_data, political_data, by.x = "region", by.y = "state", all.x = TRUE)
+
+political_map <- ggplot(political_merged_data, aes(x = long, y = lat, group = group)) +
+  geom_polygon(aes(fill = political_culture), color = "black", size = 0.2) +
+  scale_fill_manual(values = c("lightgreen", "magenta", "lightyellow"), name = "") +
+  theme_void() +
+  labs(subtitle = "Elazar's Cultural Classification by State", caption = "Source: Daniel Elazar")  
+political_map
 ```
