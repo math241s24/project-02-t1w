@@ -245,7 +245,8 @@ state_economic_data <- state_economic_data %>%
     State = ifelse(State == "", NA, State),
     `Median Household Income` = ifelse(`Median Household Income` == "", NA, `Median Household Income`)
     ) %>%
-  filter(complete.cases(.))
+  filter(complete.cases(.)) %>%
+  mutate(`Median Household Income` = as.numeric(gsub(",", "", `Median Household Income`)))
 head(state_economic_data)
 ```
 
@@ -289,7 +290,7 @@ state_economic_data <- state_economic_data %>% rename(
 ```{r}
 state_economic_data2020 <- state_economic_data %>% filter(Year == "2020") 
 state_economic_data2020 <- state_economic_data2020[-c(1, 10), ]
-  plot_usmap(data = state_economic_data2020, values = "Name")
+  plot_usmap(data = state_economic_data2020, values = `Median Household Income`)
   
   
 ```
