@@ -333,32 +333,6 @@ leaflet(state_economic_data_no_dc) %>%
 ```
 
 ```{r}
-str(map_data)
-```
-
-```{r}
-
-
-data <- state_economic_data
-
-map_data <- map_data("state")
-
-merged_data <- merge(map_data, data, by.x = "region", by.y = "State", all.x = TRUE)
-
-econ_animate <- ggplot() +
-  geom_polygon(data = merged_data, aes(x = long, y = lat, group = group, fill = `Median Household Income`)) +
-  scale_fill_gradient(name = "Data", low = "lightblue", high = "darkblue", na.value = "grey", guide = "legend") +
-  theme_void() +
-  labs(title = "Your Title", caption = "Source: Your Source") +
-  transition_time(Year) %>%
-  labs(title = "Year: {frame_time}") +  # Add a label showing the current year
-  theme(plot.title = element_text(hjust = 0.5))  # Center the label
-
-animate(econ_animate, renderer = gifski_renderer())
-
-```
-
-```{r}
 data <- state_economic_data
 
 map_data <- map_data("state")
@@ -367,9 +341,9 @@ merged_data <- merge(map_data, data, by.x = "region", by.y = "State", all.x = TR
 
 econ_animate <- ggplot(merged_data, aes(x = long, y = lat, group = group)) +
   geom_polygon(aes(fill = `Median Household Income`)) +
-  scale_fill_gradient(name = "Data", low = "lightblue", high = "darkblue", na.value = "grey", guide = "legend") +
+  scale_fill_gradient(name = "Median Household Income", low = "lightblue", high = "darkblue", na.value = "grey", guide = "legend") +
   theme_void() +
-  labs(title = "Your Title", caption = "Source: Your Source") +
+  labs(subtitle = "Real Median Household Income over Time", caption = "Source: FRED") +
   transition_states(Year) +
   labs(title = "Year: {closest_state}") + 
   theme(plot.title = element_text(hjust = 0.5))  
