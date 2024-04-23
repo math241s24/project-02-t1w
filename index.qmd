@@ -26,6 +26,8 @@ library(leaflet)
 library(tmap)
 library(readr)
 library(leaflet)
+library(maps)
+library(gganimate)
 ```
 
 ```{r load-data}
@@ -215,7 +217,8 @@ state_abortion_data <- state_abortion_data %>%
   mutate(Number = as.numeric(gsub(",", "", Number)), 
          Rate = as.numeric(gsub(",", "", Rate)),
          Ratio = as.numeric(gsub(",", "", Ratio))
-         )
+         ) %>%
+  mutate(Area = tolower(Area))
 head(state_abortion_data)
 ```
 
@@ -264,7 +267,8 @@ state_economic_data <- state_economic_data %>%
     `Median Household Income` = ifelse(`Median Household Income` == "", NA, `Median Household Income`)
     ) %>%
   filter(complete.cases(.)) %>%
-  mutate(`Median Household Income` = as.numeric(gsub(",", "", `Median Household Income`)))
+  mutate(`Median Household Income` = as.numeric(gsub(",", "", `Median Household Income`))) %>%
+  mutate(State = tolower(State))
 head(state_economic_data)
 ```
 
@@ -326,4 +330,49 @@ plot_usmap(data = state_economic_data_no_dc, values = "Name")
 leaflet(state_economic_data_no_dc) %>%
   addTiles() %>%
   addPolygons()
+```
+
+```{r}
+str(map_data)
+```
+
+```{r}
+
+
+data <- state_economic_data
+
+map_data <- map_data("state")
+
+merged_data <- merge(map_data, data, by.x = "region", by.y = "State", all.x = TRUE)
+
+econ_animate <- ggplot() +
+  geom_polygon(data = merged_data, aes(x = long, y = lat, group = group, fill = `Median Household Income`)) +
+  scale_fill_gradient(name = "Data", low = "lightblue", high = "darkblue", na.value = "grey", guide = "legend") +
+  theme_void() +
+  labs(title = "Your Title", caption = "Source: Your Source") +
+  transition_time(Year) %>%
+  labs(title = "Year: {frame_time}") +  # Add a label showing the current year
+  theme(plot.title = element_text(hjust = 0.5))  # Center the label
+
+animate(econ_animate, renderer = gifski_renderer())
+
+```
+
+```{r}
+data <- state_economic_data
+
+map_data <- map_data("state")
+
+merged_data <- merge(map_data, data, by.x = "region", by.y = "State", all.x = TRUE)
+
+econ_animate <- ggplot(merged_data, aes(x = long, y = lat, group = group)) +
+  geom_polygon(aes(fill = `Median Household Income`)) +
+  scale_fill_gradient(name = "Data", low = "lightblue", high = "darkblue", na.value = "grey", guide = "legend") +
+  theme_void() +
+  labs(title = "Your Title", caption = "Source: Your Source") +
+  transition_states(Year) +
+  labs(title = "Year: {closest_state}") + 
+  theme(plot.title = element_text(hjust = 0.5))  
+
+animate(econ_animate, renderer = gifski_renderer())
 ```
