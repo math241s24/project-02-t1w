@@ -36,19 +36,6 @@ knitr::opts_chunk$set(
 #| include: false
 ```
 
----
-title: "Holiday in Film"
-subtitle: "A Data Analysis of Holiday Movies"
-format: 
-  revealjs
-highlight-style: a11y
-execute:
-  code-link: true
-  echo: true
-editor_options: 
-  chunk_output_type: console
----
-
 ```{r setup, include = FALSE}
 #document setup
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
@@ -224,4 +211,8 @@ ggplot(filtered_holiday_movies, aes(x = year,
 #generate a linear model predicting runtime based on year and holiday 
 holidays_lm <- lm(data = filtered_holiday_movies, runtime_minutes ~ year + holidays)
 get_regression_table(holidays_lm)
+```
+
+```{r}
+
 ```
