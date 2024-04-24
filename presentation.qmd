@@ -1,7 +1,7 @@
 ---
 title: "The Attractiveness of Cities"
 subtitle: "Project 2"
-author: "Team"
+author: "James Aas, Audrey Mills, Jameson Oates"
 title-slide-attributes:
   data-slide-number: none
 format: revealjs
@@ -85,7 +85,7 @@ filtered_holiday_movies <- new_holiday_movies[new_holiday_movies$`true/false`, ]
 filtered_holiday_movies$holidays <- factor(filtered_holiday_movies$holidays, levels = c("christmas", "hanukkah", "kwanzaa", "holiday"))
 ```
 
-## Introduction {.smaller}
+## Introduction and Goals {.smaller}
 
 ::: notes
 -   14 variables, 2265 observations
@@ -101,7 +101,7 @@ filtered_holiday_movies$holidays <- factor(filtered_holiday_movies$holidays, lev
         -   How does type of holiday affect a movie's rating, and for each holiday, how does the movie's age affect its rating?
         -   How do movie run times vary over time? Have holiday movies gotten longer over time? Shorter?
 
-## Question 1 Graph 1 {.smaller}
+##  {.smaller}
 
 ::: notes
 -   How does type of holiday affect a movie's rating, and for each holiday, how does the movie's age affect its rating?
@@ -218,7 +218,7 @@ ggplot(filtered_holiday_movies, aes(x = year,
                                    vjust = 0.6))
 ```
 
-## Question 2 Linear Model {.smaller}
+## Linear Model {.smaller}
 
 ```{r, echo = FALSE}
 #generate a linear model predicting runtime based on year and holiday 
