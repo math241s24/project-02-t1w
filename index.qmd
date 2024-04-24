@@ -10,9 +10,7 @@ execute:
   message: false
 ---
 
-## Abstract
-
-## Introduction
+## Data Wrangling
 
 ```{r load-packages}
 #| label: load-pkgs
@@ -33,8 +31,6 @@ library(gganimate)
 ```{r load-data}
 #| label: load-data
 #| message: false
-
-presidential_election_data <- read.csv("data/presidential_election_data.csv")
 
 state_economic_data <- read.csv("data/state_economic_data.csv")
 
@@ -238,14 +234,46 @@ head(state_economic_data)
 ```
 
 ```{r}
+presidential_election_data <- read.csv("data/presidential_election_data.csv")
+
 presidential_election_data <- presidential_election_data %>%
   subset(select = -c(X1, X, TOTAL.VOTES, TOTAL.VOTES..)) %>%
   mutate(
     FEC.ID = ifelse(FEC.ID == "n/a", NA, FEC.ID)
   ) %>%
   mutate(`GENERAL.RESULTS` = as.numeric(gsub(",", "", `GENERAL.RESULTS`))) %>%
-  mutate(STATE = tolower(STATE))
+  mutate(STATE = tolower(STATE)) %>%
+  filter(PARTY == "R") %>%
+  mutate("R Share of General" = GENERAL.. ) %>%
+  select(STATE, 'R Share of General', YEAR) 
 
+```
+
+```{r}
+abortion_and_economic <- full_join(state_abortion_data, 
+             state_economic_data,
+             by = c("Area" = "State",
+                    "Year" = "Year"))
+abortion_and_economic <- abortion_and_economic %>%
+  mutate(Year = as.numeric(gsub(",", "", Year)))
+
+state_immigration_data <- state_immigration_data %>%
+  mutate(Year = as.numeric(gsub(",", "", Year))) 
+
+culture_president <- left_join(presidential_election_data, 
+                               political_culture_elazar,
+                                 by = c("STATE"= "state")) 
+everything_but_immigration <- left_join(culture_president, 
+                               abortion_and_economic,
+                    by = c("STATE" = "Area",
+                    "YEAR" = "Year"))
+
+all_variables_dataset<- full_join(everything_but_immigration, 
+            state_immigration_data,
+            by = c("STATE" = "Current residence in",
+                   "YEAR" = "Year"))
+  
+head(all_variables_dataset)
 ```
 
 ```{r}
@@ -319,30 +347,27 @@ political_map <- ggplot(political_merged_data, aes(x = long, y = lat, group = gr
 political_map
 ```
 
+**ABSTRACT**
+
+**INTRODUCTION**
+
+**LINEAR MODEL**
+
 ```{r}
-abortion_and_economic <- full_join(state_abortion_data, 
-             state_economic_data,
-             by = c("Area" = "State",
-                    "Year" = "Year"))
-abortion_and_economic <- abortion_and_economic %>%
-  mutate(Year = as.numeric(gsub(",", "", Year)))
+library(moderndive)
+immigration_mlr <-lm(`Different state of residence 1 year ago: Estimate` ~ `Median Household Income` + 
+                      `political_culture` + 
+                       Number+ 
+                       `R Share of General`, 
+                     data = all_variables_dataset)
+get_regression_table(immigration_mlr)
+```
 
-state_immigration_data <- state_immigration_data %>%
-  mutate(Year = as.numeric(gsub(",", "", Year))) 
+"The best way to visualize multiple linear regression is to **create a visualization for each independent variable while holding the other independent variables constant**."
 
-culture_president <- left_join(presidential_election_data, 
-                               political_culture_elazar,
-                                 by = c("STATE"= "state")) 
-everything_but_immigration <- left_join(culture_president, 
-                               abortion_and_economic,
-                    by = c("STATE" = "Area",
-                    "YEAR" = "Year"))
-
-all_variables_dataset<- full_join(abortion_and_economic, 
-            state_immigration_data,
-            by = c("STATE" = "Current residence in",
-                   "YEAR" = "Year"))
-
-  
-head(all_variables_dataset)
+```{r}
+library(ggplot2)
+ggplot(data = all_variables_dataset, aes(x = "Different state of residence 1 year ago: Estimate", y ="Median Household Income", color = political_culture))+
+geom_point()+
+  geom_smooth(method = "lm", se=F)
 ```
