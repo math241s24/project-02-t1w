@@ -1,7 +1,7 @@
 ---
 title: "The Attractiveness of Cities"
 subtitle: "Project 2"
-author: "Team"
+author: "Jameson Oates, James Aas, Audrey Mills"
 title-slide-attributes:
   data-slide-number: none
 format: revealjs
@@ -15,6 +15,15 @@ execute:
 #| include: false
 
 library(tidyverse)
+library(tidyverse)
+library(dplyr)
+library(tidyr)
+library(leaflet)
+library(tmap)
+library(readr)
+library(leaflet)
+library(maps)
+library(gganimate)
 ```
 
 ```{r}
@@ -34,6 +43,7 @@ knitr::opts_chunk$set(
 ```{r}
 #| label: load-data
 #| include: false
+#| 
 ```
 
 ---
@@ -49,179 +59,32 @@ editor_options:
   chunk_output_type: console
 ---
 
-```{r setup, include = FALSE}
-#document setup
-knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+Question: How is interstate migration affected by state abortion policy, economic status, political culture, and presidential vote?
+
+## Goals: 
+
+-   Examine the numbers of people moving between states and compare them to potential explaining factors such as:
+
+    -   Access to abortion
+
+    -   Median household income
+
+    -   Elazar's cultural classification
+
+    -   Partisanship
+
+-   Create a spacial-temporal visualization of each of these factors from 2012-2020 as well as a linear model examining state migration as a function of them
+
+## Datasets
+
+```{r}
+glimpse(abortion_data)
 ```
 
-```{r, echo = FALSE}
-#load necessary libraries
-library(tidyr)
-library(readr)
-library(ggplot2)
-library(dplyr)
-library(moderndive)
-```
+## Visualizations
 
-```{r, echo = FALSE}
-#acquires data
-holiday_movies <- read_csv("data/holiday_movies.csv")
+## Linear Model
 
-#combines holidays into one column into new data frame, new_holiday_movies
-new_holiday_movies <- pivot_longer(
-  holiday_movies,
-  cols = c("christmas", 
-           "hanukkah", 
-           "kwanzaa", 
-           "holiday"),
-  names_to = "holidays",
-  values_to = "true/false"
-)
+## Future Plans
 
-#filters only the movies where the associated holiday variable is "TRUE" (eg. if film has "christmas", it will not display "FALSE" for hanukkah, kwanzaa, and holiday). Creates data frame filtered_holiday_movies
-filtered_holiday_movies <- new_holiday_movies[new_holiday_movies$`true/false`, ]
-
-#converts the "holidays" column into categories "christmas", "hanukkah", "kwanzaa", "holiday", useful for being graphed later
-filtered_holiday_movies$holidays <- factor(filtered_holiday_movies$holidays, levels = c("christmas", "hanukkah", "kwanzaa", "holiday"))
-```
-
-## Introduction {.smaller}
-
-::: notes
--   14 variables, 2265 observations
-:::
-
--   Our dataset: Holiday Movies
-    -   From TidyTuesday repository
-    -   Dimensions: 2265x14
-    -   Created by Jo Hardin, pulling from IMDb
-    -   Of note: movies titles containing "Holiday", "Christmas", "Hanukkah", or "Kwanzaa"
--   We looked at trends relating to ratings, age, and run time of different holiday movies
-    -   We chose this data set because we are interested in:
-        -   How does type of holiday affect a movie's rating, and for each holiday, how does the movie's age affect its rating?
-        -   How do movie run times vary over time? Have holiday movies gotten longer over time? Shorter?
-
-## Question 1 Graph 1 {.smaller}
-
-::: notes
--   How does type of holiday affect a movie's rating, and for each holiday, how does the movie's age affect its rating?
-    -   We combined holidays into one column using pivot longer
-    -   Our first graph is a histogram showing the frequency of different average ratings by movie type
-    -   Kwanzaa highest ratings (sample size)
-    -   Hanukkah variance in ratings (also hard to see, given low number of data points)
-    -   Christmas and Holiday most frequent
-:::
-
-```{r, echo = FALSE}
-#visualizes the frequency of ratings by different holiday movies
-ggplot(filtered_holiday_movies, aes(x = average_rating, 
-                                    fill = holidays)) +
-  geom_histogram(linewidth = .1, color = "black") +
-  labs(title = "Holiday movies by rating frequency",
-       x = "Average rating",
-       y = "Frequency",
-       fill = "Holiday in title:") +
-  theme_minimal()
-```
-
-## Question 1 Graph 2 {.smaller}
-
-::: notes
--   Our second graph is a scatterplot with line of best fit showing the average rating over time for each holiday
-    -   Decrease in ratings over time
-    -   Fairly consistent
-    -   Overall ratings for holiday movies have decreased slightly, fairly consistent
-    -   Lack of datapoints for both Kwanzaa and Hanukkah movies
-    -   Type of holiday mentioned in the title has a limited effect on the average rating
-    -   As year increases the ratings for all types have slightly decreased
-:::
-
-```{r, echo = FALSE}
-#visualizes the change in ratings over time, faceted by holiday
-ggplot(filtered_holiday_movies, aes(x = year, 
-                                    y = average_rating, 
-                                    color = holidays)) +
-  geom_point(alpha = 0.6) +
-  geom_smooth(method="lm", 
-              se = FALSE, 
-              color = "gray36") +
-  facet_wrap(~ holidays, labeller = labeller(holidays = c("christmas" = "Christmas", 
-                                                          "hanukkah" = "Hanukkah", 
-                                                          "kwanzaa" = "Kwanzaa",
-                                                          "holiday" = "Holiday"))) +
-  labs(title = "Average movie rating by year and holiday",
-       x = "Year", 
-       y = "Average Rating"
-       ) +
-  theme_minimal() +
-  theme(legend.position = "none") +
-  theme(axis.text.x = element_text(angle = 65, 
-                                   vjust = 0.6))
-```
-
-## Question 2 Graph 1 {.smaller}
-
-::: notes
--   How do movie run times vary over time? Have holiday movies gotten longer over time? Shorter? Is there a significant difference of run time over time?
-    -   Our first graph is a violin plot showing density of runtimes based on holiday
-    -   Kwanzaa movies short runtimes
-    -   Hanukkah next
-    -   Christmas have longest, concentration around 90 minutes
-    -   Holiday movies in general -\> 90 minutes but have a wide range
-:::
-
-```{r, echo = FALSE}
-#visualizes the density of runtimes based on holiday
-library(dplyr)
-Christmas <- filtered_holiday_movies %>%
-  filter(holidays == "christmas") %>%
-  filter(year >= 2000 & year <= 2023)
-
-ggplot(filtered_holiday_movies, aes(x = runtime_minutes, 
-                                    y = holidays, 
-                                    fill = holidays)) +
-  geom_violin() +
-  labs(title = "Runtime in holiday movies",
-    x = "Runtime (in minutes)",
-    y = ""
-    ) +
-  theme_minimal() +
-  theme(legend.position = "none")
-```
-
-## Question 2 Graph 2 {.smaller}
-
-::: notes
--   Our second graph is a a scatterplot showing runtime of movies over time, faceted by holiday type
-    -   Runtime has increased slightly over the years in all but "holiday"
-    -   Stayed fairly consistent for holiday movies overall
-    -   General takeaways
-:::
-
-```{r, echo = FALSE}
-#visualize the runtime of movies over time, faceted by holiday type
-ggplot(filtered_holiday_movies, aes(x = year, 
-                                    y = runtime_minutes, 
-                                    color = holidays)) +
-  geom_point(alpha = 0.6) +
-  geom_smooth(method="lm", 
-              se = FALSE, 
-              color = "gray36") +
-  facet_wrap(~ holidays) +
-  labs(title = "Movie Runtime by Year and Holiday",
-       x = "Year", 
-       y = "Runtime in minutes",
-       color = "Holiday in movie title") +
-  theme_minimal() +
-  theme(legend.position = "none") +
-  theme(axis.text.x = element_text(angle = 65, 
-                                   vjust = 0.6))
-```
-
-## Question 2 Linear Model {.smaller}
-
-```{r, echo = FALSE}
-#generate a linear model predicting runtime based on year and holiday 
-holidays_lm <- lm(data = filtered_holiday_movies, runtime_minutes ~ year + holidays)
-get_regression_table(holidays_lm)
-```
+abortions per 1000 women
