@@ -215,6 +215,7 @@ state_immigration_data <- state_immigration_data %>%
     `Different state of residence 1 year ago: Estimate` = as.numeric(
       gsub(",", "", `Different state of residence 1 year ago: Estimate`)
       )
+          
     ) 
 head(state_immigration_data)
 ```
@@ -242,12 +243,9 @@ presidential_election_data <- presidential_election_data %>%
   mutate(
     FEC.ID = ifelse(FEC.ID == "n/a", NA, FEC.ID)
   ) %>%
-  mutate(`GENERAL.RESULTS` = as.numeric(gsub(",", "", `GENERAL.RESULTS`)))
-```
+  mutate(`GENERAL.RESULTS` = as.numeric(gsub(",", "", `GENERAL.RESULTS`))) %>%
+  mutate(STATE = tolower(STATE))
 
-```{r}
-d1_d2 <- full_join(political_culture_elazar, presidential_election_data, by = c("state" = "STATE"))
-head(d1_d2)
 ```
 
 ```{r}
@@ -319,4 +317,32 @@ political_map <- ggplot(political_merged_data, aes(x = long, y = lat, group = gr
   theme_void() +
   labs(subtitle = "Elazar's Cultural Classification by State", caption = "Source: Daniel Elazar")  
 political_map
+```
+
+```{r}
+abortion_and_economic <- full_join(state_abortion_data, 
+             state_economic_data,
+             by = c("Area" = "State",
+                    "Year" = "Year"))
+abortion_and_economic <- abortion_and_economic %>%
+  mutate(Year = as.numeric(gsub(",", "", Year)))
+
+state_immigration_data <- state_immigration_data %>%
+  mutate(Year = as.numeric(gsub(",", "", Year))) 
+
+culture_president <- left_join(presidential_election_data, 
+                               political_culture_elazar,
+                                 by = c("STATE"= "state")) 
+everything_but_immigration <- left_join(culture_president, 
+                               abortion_and_economic,
+                    by = c("STATE" = "Area",
+                    "YEAR" = "Year"))
+
+all_variables_dataset<- full_join(abortion_and_economic, 
+            state_immigration_data,
+            by = c("STATE" = "Current residence in",
+                   "YEAR" = "Year"))
+
+  
+head(all_variables_dataset)
 ```
