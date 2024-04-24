@@ -144,8 +144,6 @@ political_culture <- c("Traditionalistic",
 
 political_culture_elazar <- data.frame(state, political_culture) %>%
   mutate(state = tolower(state))
-
-head(presidential_election_data)
 ```
 
 ```{r}
@@ -303,7 +301,7 @@ econ_merged_data <- merge(econ_map_data, econ_data, by.x = "region", by.y = "Sta
 
 econ_animate <- ggplot(econ_merged_data, aes(x = long, y = lat, group = group)) +
   geom_polygon(aes(fill = `Median Household Income`)) +
-  scale_fill_gradient(name = "Median Household Income", low = "lightblue", high = "darkblue", na.value = "grey", guide = "legend") +
+  scale_fill_gradient(name = "Income", low = "lightblue", high = "darkblue", na.value = "grey", guide = "legend") +
   theme_void() +
   labs(subtitle = "Real Median Household Income over Time", caption = "Source: FRED") +
   transition_states(Year) +
