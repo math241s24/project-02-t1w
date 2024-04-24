@@ -283,7 +283,9 @@ head(all_variables_dataset)
 
 ```
 
-Question: How is interstate migration affected by state abortion policy, economic status, political culture, and presidential vote?
+## Question 
+
+How is interstate migration affected by state abortion policy, economic status, political culture, and presidential vote?
 
 ## Goals:
 
@@ -300,6 +302,34 @@ Question: How is interstate migration affected by state abortion policy, economi
 -   Create a spacial-temporal visualization of each of these factors from 2012-2020 as well as a linear model examining state migration as a function of them
 
 ## Datasets
+
+```{r}
+head(state_abortion_data, 10)
+```
+
+---
+
+```{r}
+head(state_economic_data, 10)
+```
+
+---
+
+```{r}
+head(political_culture_elazar, 10)
+```
+
+---
+
+```{r}
+head(presidential_election_data, 10)
+```
+
+---
+
+```{r}
+head(state_immigration_data, 10)
+```
 
 Abortions per 1000 women
 
