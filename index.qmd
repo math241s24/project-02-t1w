@@ -26,6 +26,8 @@ library(readr)
 library(leaflet)
 library(maps)
 library(gganimate)
+library(moderndive)
+library(ggplot2)
 ```
 
 ```{r load-data}
@@ -37,6 +39,8 @@ state_economic_data <- read.csv("data/state_economic_data.csv")
 state_abortion_data <- read.csv("data/abortions_dataset.csv")
 
 state_immigration_data <- read.csv("data/interstate_migration_data.csv")
+
+presidential_election_data <- read.csv("data/presidential_election_data.csv")
 
 state <- c("Alabama", 
            "Alaska", 
@@ -181,8 +185,6 @@ state_abortion_data <- state_abortion_data %>%
   mutate(Abortions_per_1000_live_births = Ratio) %>%
   mutate(`Out_of_state_abortions(number and percentage)` = `Out-of-State (number and percentage)`) %>%
   select(Area, Abortions_per_1000_women, Abortions_per_1000_live_births, Year, `Out_of_state_abortions(number and percentage)`)
- 
-head(state_abortion_data)
 ```
 
 ```{r}
@@ -215,7 +217,6 @@ state_immigration_data <- state_immigration_data %>%
       gsub(",", "", `Different state of residence 1 year ago: Estimate`)
       )
     ) 
-head(state_immigration_data)
 ```
 
 ```{r}
@@ -232,12 +233,9 @@ state_economic_data <- state_economic_data %>%
   filter(complete.cases(.)) %>%
   mutate(`Median Household Income` = as.numeric(gsub(",", "", `Median Household Income`))) %>%
   mutate(State = tolower(State))
-head(state_economic_data)
 ```
 
 ```{r}
-presidential_election_data <- read.csv("data/presidential_election_data.csv")
-
 presidential_election_data <- presidential_election_data %>%
   subset(select = -c(X1, X, TOTAL.VOTES, TOTAL.VOTES..)) %>%
   mutate(
@@ -275,26 +273,6 @@ all_variables_dataset<- full_join(everything_but_immigration,
             state_immigration_data,
             by = c("STATE" = "Current residence in",
                    "YEAR" = "Year"))
-  
-head(all_variables_dataset)
-```
-
-```{r}
-library(usmap)
-statepov <- statepov
-countypov <- countypov
-statep <- countypov %>% group_by(abbr) %>%
-summarize(avgpov = mean(pct_pov_2021))
-statep <- statep %>% 
-  rename(
-    state = abbr)
-
-
-plot_usmap(data = statepov, values = "pct_pov_2021", include = c(), color = "blue") + scale_fill_continuous(low = "white", high = "blue", name = "Poverty Percentage Estimates", label = scales::comma) + labs(title = "hurah", subtitle = "using the internets dataset") + theme(legend.position = "right")
-
-plot_usmap(data = statep, values = "avgpov", include = c(), color = "blue") + scale_fill_continuous(low = "white", high = "blue", name = "Poverty Percentage Estimates", label = scales::comma) + labs(title = "hurah", subtitle = "using my dataset (that came from the internet dataset") + theme(legend.position = "right")
-
-
 ```
 
 ```{r}
@@ -324,10 +302,10 @@ abortion_map_data <- map_data("state")
 abortion_merged_data <- merge(abortion_map_data, abortion_data, by.x = "region", by.y = "Area", all.x = TRUE)
 
 abortion_animate <- ggplot(abortion_merged_data, aes(x = long, y = lat, group = group)) +
-  geom_polygon(aes(fill = Number)) +
-  scale_fill_gradient(name = "Abortions", low = "pink", high = "darkred", na.value = "grey", guide = "legend") +
+  geom_polygon(aes(fill = `Abortions_per_1000_women`)) +
+  scale_fill_gradient(name = "Abortions per 1000 Women", low = "lightgreen", high = "darkgreen", na.value = "grey", guide = "legend") +
   theme_void() +
-  labs(subtitle = "Abortions by State Residents over Time", caption = "Source: CDC") +
+  labs(subtitle = "Abortions per 1000 Women Aged 15-44 Over Time", caption = "Source: CDC") +
   transition_states(Year) +
   labs(title = "Year: {closest_state}") + 
   theme(plot.title = element_text(hjust = 0.5))  
@@ -344,9 +322,9 @@ election_merged_data <- merge(election_map_data, election_data, by.x = "region",
 
 election_animate <- ggplot(election_merged_data, aes(x = long, y = lat, group = group)) +
   geom_polygon(aes(fill = `R Share of General`)) +
-  scale_fill_gradient(name = "Elections", low = "pink", high = "darkred", na.value = "grey", guide = "legend") +
+  scale_fill_gradient(name = "% of Vote", low = "pink", high = "darkred", na.value = "grey", guide = "legend") +
   theme_void() +
-  labs(subtitle = "Test", caption = "Source: Test") +
+  labs(subtitle = "Republican Share of Vote By State in General Presidential Election", caption = "Source: FEC") +
   transition_states(YEAR) +
   labs(title = "Year: {closest_state}") + 
   theme(plot.title = element_text(hjust = 0.5))  
@@ -366,6 +344,7 @@ political_map <- ggplot(political_merged_data, aes(x = long, y = lat, group = gr
   scale_fill_manual(values = c("lightgreen", "magenta", "lightyellow"), name = "") +
   theme_void() +
   labs(subtitle = "Elazar's Cultural Classification by State", caption = "Source: Daniel Elazar")  
+
 political_map
 ```
 
@@ -376,24 +355,26 @@ political_map
 **LINEAR MODEL**
 
 ```{r}
-editing <- all_variables_dataset %>% filter(YEAR == '2008')
+editing <- all_variables_dataset %>% 
+  filter(YEAR == '2008')
+
 all_variables_dataset <- anti_join(all_variables_dataset, editing, by = 'YEAR')
 ```
 
 ```{r}
-library(moderndive)
-immigration_mlr <-lm(`Different state of residence 1 year ago: Estimate` ~ `Median Household Income` + 
-                      `political_culture` + 
-                       Number+ 
-                       `R Share of General`, 
-                     data = all_variables_dataset, na.rm = TRUE)
+immigration_mlr <- lm(`Different state of residence 1 year ago: Estimate` ~ 
+                        `Median Household Income` + 
+                        `political_culture` + 
+                        `Abortions_per_1000_women` + 
+                        `R Share of General`, 
+                      data = all_variables_dataset, na.rm = TRUE)
+
 get_regression_table(immigration_mlr)
 ```
 
 "The best way to visualize multiple linear regression is to **create a visualization for each independent variable while holding the other independent variables constant**."
 
 ```{r}
-library(ggplot2)
 ggplot(data = all_variables_dataset, aes(x = "Different state of residence 1 year ago: Estimate", y ="Median Household Income", color = political_culture))+
 geom_point()+
   geom_smooth(method = "lm", se=F)

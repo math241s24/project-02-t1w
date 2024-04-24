@@ -24,6 +24,8 @@ library(readr)
 library(leaflet)
 library(maps)
 library(gganimate)
+library(moderndive)
+library(ggplot2)
 ```
 
 ```{r}
