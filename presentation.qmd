@@ -77,7 +77,7 @@ Question: How is interstate migration affected by state abortion policy, economi
 
 ## Datasets
 
-abortions per 1000 women
+Abortions per 1000 women
 
 ## Visualizations
 
