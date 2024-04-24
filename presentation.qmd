@@ -77,10 +77,6 @@ Question: How is interstate migration affected by state abortion policy, economi
 
 ## Datasets
 
-```{r}
-glimpse(abortion_data)
-```
-
 ## Visualizations
 
 ## Linear Model

@@ -144,41 +144,44 @@ political_culture <- c("Traditionalistic",
 
 political_culture_elazar <- data.frame(state, political_culture) %>%
   mutate(state = tolower(state))
-
-head(presidential_election_data)
 ```
 
 ```{r}
 state_abortion_data <- state_abortion_data %>%
   slice(-(1:1)) %>%
   rename(
-    Area = 1,
-    Number = 2,
-    Rate = 3,
-    Ratio = 4,
-    `Out-of-State (number and percentage)` = 5,
-    Year = 6
+	Area = 1,
+	Number = 2,
+	Rate = 3,
+	Ratio = 4,
+	`Out-of-State (number and percentage)` = 5,
+	Year = 6
   ) %>%
   mutate(
-    Number = ifelse(Number %in% c("N/A"), NA, Number),
-    Rate = ifelse(Rate %in% c("N/A"), NA, Rate),
-    Ratio = ifelse(Ratio %in% c("N/A"), NA, Ratio),
-    `Out-of-State (number and percentage)` = ifelse(`Out-of-State (number and percentage)` %in% c("N/A"), NA, `Out-of-State (number and percentage)`)
+	Number = ifelse(Number %in% c("N/A"), NA, Number),
+	Rate = ifelse(Rate %in% c("N/A"), NA, Rate),
+	Ratio = ifelse(Ratio %in% c("N/A"), NA, Ratio),
+	`Out-of-State (number and percentage)` = ifelse(`Out-of-State (number and percentage)` %in% c("N/A"), NA, `Out-of-State (number and percentage)`)
   )  %>%
-  filter(!(Number %in% c("25,619", 
-                         "30,555", 
-                         "35,398", 
-                         "37,523", 
-                         "73,815", 
-                         "89,469", 
-                         "59,854", 
-                         "27,471"))) %>%
-  mutate(Number = as.numeric(gsub(",", "", Number)), 
-         Rate = as.numeric(gsub(",", "", Rate)),
-         Ratio = as.numeric(gsub(",", "", Ratio)),
-         Year = as.numeric(gsub(",", "", Year))
-         ) %>%
-  mutate(Area = tolower(Area))
+  filter(!(Number %in% c("25,619",
+                     	"30,555",
+                     	"35,398",
+                     	"37,523",
+                     	"73,815",
+                     	"89,469",
+                     	"59,854",
+                     	"27,471"))) %>%
+  mutate(Number = as.numeric(gsub(",", "", Number)),
+     	Rate = as.numeric(gsub(",", "", Rate)),
+     	Ratio = as.numeric(gsub(",", "", Ratio)),
+     	Year = as.numeric(gsub(",", "", Year))
+     	) %>%
+  mutate(Area = tolower(Area)) %>%
+  mutate(Abortions_per_1000_women = Rate) %>%
+  mutate(Abortions_per_1000_live_births = Ratio) %>%
+  mutate(`Out_of_state_abortions(number and percentage)` = `Out-of-State (number and percentage)`) %>%
+  select(Area, Abortions_per_1000_women, Abortions_per_1000_live_births, Year, `Out_of_state_abortions(number and percentage)`)
+ 
 head(state_abortion_data)
 ```
 
@@ -211,7 +214,6 @@ state_immigration_data <- state_immigration_data %>%
     `Different state of residence 1 year ago: Estimate` = as.numeric(
       gsub(",", "", `Different state of residence 1 year ago: Estimate`)
       )
-          
     ) 
 head(state_immigration_data)
 ```
@@ -239,14 +241,15 @@ presidential_election_data <- read.csv("data/presidential_election_data.csv")
 presidential_election_data <- presidential_election_data %>%
   subset(select = -c(X1, X, TOTAL.VOTES, TOTAL.VOTES..)) %>%
   mutate(
-    FEC.ID = ifelse(FEC.ID == "n/a", NA, FEC.ID)
+    FEC.ID = ifelse(FEC.ID == "n/a", NA, FEC.ID),
+    `GENERAL.RESULTS` = as.numeric(gsub(",", "", `GENERAL.RESULTS`)),
+    STATE = tolower(STATE),
+    `R Share of General` = as.numeric(gsub("%", "", `GENERAL..`)) / 100
   ) %>%
-  mutate(`GENERAL.RESULTS` = as.numeric(gsub(",", "", `GENERAL.RESULTS`))) %>%
-  mutate(STATE = tolower(STATE)) %>%
   filter(PARTY == "R") %>%
-  mutate("R Share of General" = GENERAL.. ) %>%
-  select(STATE, 'R Share of General', YEAR) 
+  select(STATE, `R Share of General`, YEAR)
 
+str(presidential_election_data)
 ```
 
 ```{r}
@@ -303,7 +306,7 @@ econ_merged_data <- merge(econ_map_data, econ_data, by.x = "region", by.y = "Sta
 
 econ_animate <- ggplot(econ_merged_data, aes(x = long, y = lat, group = group)) +
   geom_polygon(aes(fill = `Median Household Income`)) +
-  scale_fill_gradient(name = "Median Household Income", low = "lightblue", high = "darkblue", na.value = "grey", guide = "legend") +
+  scale_fill_gradient(name = "Income", low = "lightblue", high = "darkblue", na.value = "grey", guide = "legend") +
   theme_void() +
   labs(subtitle = "Real Median Household Income over Time", caption = "Source: FRED") +
   transition_states(Year) +
@@ -330,6 +333,25 @@ abortion_animate <- ggplot(abortion_merged_data, aes(x = long, y = lat, group = 
   theme(plot.title = element_text(hjust = 0.5))  
 
 animate(abortion_animate, renderer = gifski_renderer())
+```
+
+```{r}
+election_data <- presidential_election_data
+
+election_map_data <- map_data("state")
+
+election_merged_data <- merge(election_map_data, election_data, by.x = "region", by.y = "STATE", all.x = TRUE)
+
+election_animate <- ggplot(election_merged_data, aes(x = long, y = lat, group = group)) +
+  geom_polygon(aes(fill = `R Share of General`)) +
+  scale_fill_gradient(name = "Elections", low = "pink", high = "darkred", na.value = "grey", guide = "legend") +
+  theme_void() +
+  labs(subtitle = "Test", caption = "Source: Test") +
+  transition_states(YEAR) +
+  labs(title = "Year: {closest_state}") + 
+  theme(plot.title = element_text(hjust = 0.5))  
+
+animate(election_animate, renderer = gifski_renderer())
 ```
 
 ```{r}
