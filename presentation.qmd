@@ -48,6 +48,8 @@ knitr::opts_chunk$set(
 #| 
 ```
 
+---
+
 ```{r, echo = FALSE}
 state_economic_data <- read.csv("data/state_economic_data.csv")
 
@@ -278,14 +280,17 @@ all_variables_dataset<- full_join(everything_but_immigration,
             state_immigration_data,
             by = c("STATE" = "Current residence in",
                    "YEAR" = "Year"))
-  
-head(all_variables_dataset)
+
 
 ```
+
+---
 
 ## Question 
 
 How is interstate migration affected by state abortion policy, economic status, political culture, and presidential vote?
+
+---
 
 ## Goals:
 
@@ -301,40 +306,56 @@ How is interstate migration affected by state abortion policy, economic status, 
 
 -   Create a spacial-temporal visualization of each of these factors from 2012-2020 as well as a linear model examining state migration as a function of them
 
+---
+
 ## Datasets
+
+::: panel-tabset
+## Abortion
 
 ```{r}
 head(state_abortion_data, 10)
 ```
 
----
+-   Abortions per 1000 women
+
+## Economic
 
 ```{r}
 head(state_economic_data, 10)
 ```
 
----
+## Culture
 
 ```{r}
 head(political_culture_elazar, 10)
 ```
 
----
+## Partisanship
 
 ```{r}
 head(presidential_election_data, 10)
 ```
 
----
+-   \% Republican vote
+
+## Migration
 
 ```{r}
 head(state_immigration_data, 10)
 ```
+:::
 
-Abortions per 1000 women
+---
 
 ## Visualizations
 
+---
+
 ## Linear Model
 
+----
+
 ## Future Plans
+
+---
