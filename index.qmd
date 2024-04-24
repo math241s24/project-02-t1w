@@ -323,10 +323,10 @@ abortion_map_data <- map_data("state")
 abortion_merged_data <- merge(abortion_map_data, abortion_data, by.x = "region", by.y = "Area", all.x = TRUE)
 
 abortion_animate <- ggplot(abortion_merged_data, aes(x = long, y = lat, group = group)) +
-  geom_polygon(aes(fill = Number)) +
+  geom_polygon(aes(fill = "Abortions_per_1000_women")) +
   scale_fill_gradient(name = "Abortions", low = "pink", high = "darkred", na.value = "grey", guide = "legend") +
   theme_void() +
-  labs(subtitle = "Abortions by State Residents over Time", caption = "Source: CDC") +
+  labs(subtitle = "Abortions by State Residents, per 1000 women aged 15-44, over Time", caption = "Source: CDC") +
   transition_states(Year) +
   labs(title = "Year: {closest_state}") + 
   theme(plot.title = element_text(hjust = 0.5))  
