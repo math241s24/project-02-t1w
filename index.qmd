@@ -177,8 +177,11 @@ state_abortion_data <- state_abortion_data %>%
          Ratio = as.numeric(gsub(",", "", Ratio)),
          Year = as.numeric(gsub(",", "", Year))
          ) %>%
-  mutate(Area = tolower(Area))
-head(state_abortion_data)
+  mutate(Area = tolower(Area)) %>%
+  mutate(Abortions_per_1000_women = Rate) %>%
+  mutate(Abortions_per_1000_live_births = Ratio) %>%
+  mutate(`Out_of_state_abortions(number and percentage)` = `Out-of-State (number and percentage)`) %>%
+  select(Area, Abortions_per_1000_women, Abortions_per_1000_live_births, `Out_of_state_abortions(number and percentage)`, Year)
 ```
 
 ```{r}
