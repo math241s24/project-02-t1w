@@ -145,6 +145,7 @@ political_culture <- c("Traditionalistic",
 political_culture_elazar <- data.frame(state, political_culture) %>%
   mutate(state = tolower(state))
 
+head(presidential_election_data)
 ```
 
 ```{r}
@@ -177,11 +178,8 @@ state_abortion_data <- state_abortion_data %>%
          Ratio = as.numeric(gsub(",", "", Ratio)),
          Year = as.numeric(gsub(",", "", Year))
          ) %>%
-  mutate(Area = tolower(Area)) %>%
-  mutate(Abortions_per_1000_women = Rate) %>%
-  mutate(Abortions_per_1000_live_births = Ratio) %>%
-  mutate(`Out_of_state_abortions(number and percentage)` = `Out-of-State (number and percentage)`) %>%
-  select(Area, Abortions_per_1000_women, Abortions_per_1000_live_births, `Out_of_state_abortions(number and percentage)`, Year)
+  mutate(Area = tolower(Area))
+head(state_abortion_data)
 ```
 
 ```{r}
@@ -323,10 +321,10 @@ abortion_map_data <- map_data("state")
 abortion_merged_data <- merge(abortion_map_data, abortion_data, by.x = "region", by.y = "Area", all.x = TRUE)
 
 abortion_animate <- ggplot(abortion_merged_data, aes(x = long, y = lat, group = group)) +
-  geom_polygon(aes(fill = "Abortions_per_1000_women")) +
+  geom_polygon(aes(fill = Number)) +
   scale_fill_gradient(name = "Abortions", low = "pink", high = "darkred", na.value = "grey", guide = "legend") +
   theme_void() +
-  labs(subtitle = "Abortions by State Residents, per 1000 women aged 15-44, over Time", caption = "Source: CDC") +
+  labs(subtitle = "Abortions by State Residents over Time", caption = "Source: CDC") +
   transition_states(Year) +
   labs(title = "Year: {closest_state}") + 
   theme(plot.title = element_text(hjust = 0.5))  
@@ -356,12 +354,17 @@ political_map
 **LINEAR MODEL**
 
 ```{r}
+editing <- all_variables_dataset %>% filter(YEAR == '2008')
+all_variables_dataset <- anti_join(all_variables_dataset, editing, by = 'YEAR')
+```
+
+```{r}
 library(moderndive)
 immigration_mlr <-lm(`Different state of residence 1 year ago: Estimate` ~ `Median Household Income` + 
                       `political_culture` + 
                        Number+ 
                        `R Share of General`, 
-                     data = all_variables_dataset)
+                     data = all_variables_dataset, na.rm = TRUE)
 get_regression_table(immigration_mlr)
 ```
 
