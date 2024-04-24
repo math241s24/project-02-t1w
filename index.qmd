@@ -246,8 +246,6 @@ presidential_election_data <- presidential_election_data %>%
   ) %>%
   filter(PARTY == "R") %>%
   select(STATE, `R Share of General`, YEAR)
-
-str(presidential_election_data)
 ```
 
 ```{r}
