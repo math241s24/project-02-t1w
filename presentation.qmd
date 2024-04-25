@@ -311,8 +311,6 @@ How is interstate migration affected by state abortion policy, economic status, 
 head(state_abortion_data, 10)
 ```
 
--   Abortions per 1000 women
-
 ## Economic
 
 ```{r}
@@ -330,8 +328,6 @@ head(political_culture_elazar, 10)
 ```{r}
 head(presidential_election_data, 10)
 ```
-
--   \% Republican vote
 
 ## Migration
 
@@ -431,13 +427,49 @@ animate(election_animate, renderer = gifski_renderer())
 
 ## Linear Model
 
+```{r}
+editing <- all_variables_dataset %>% 
+  filter(YEAR == '2008')
+
+all_variables_dataset <- anti_join(all_variables_dataset, editing, by = 'YEAR')
+immigration_mlr <- lm(`Different state of residence 1 year ago: Estimate` ~ 
+                        `Median Household Income` * 
+                        `Abortions_per_1000_women` * 
+                        `R Share of General` + 
+                        `political_culture`,
+                      data = all_variables_dataset, na.rm = TRUE)
+
+get_regression_table(immigration_mlr)
+
+
+```
+
 ------------------------------------------------------------------------
 
-## Current Thoughts and Future Plans
+## Current Thoughts & Future Plans
+
+::: panel-tabset
+## Now
+
+We have:
+
+-   Spacial-temporal visualizations for:
+
+    -   abortion ratios
+
+    -   median household income
+
+    -   partisanship
+
+-   Spacial visualization for cultural classification
+
+-   Linear model for interstate migration using the above mentioned explanatory variables with interaction between median household income and abortions
+
+## Later
 
 -   Shiny App
 
-    -   Dashboard with editing to select different variable
+    -   Dashboard with editing to select different variables
 
 -   Linear Model
 
@@ -447,4 +479,5 @@ animate(election_animate, renderer = gifski_renderer())
 
 -   Overlaying visualizations with migration data
 
-------------------------------------------------------------------------
+-   Predictive Modeling
+:::
