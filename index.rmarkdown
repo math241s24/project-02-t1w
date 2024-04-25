@@ -10,7 +10,9 @@ execute:
   message: false
 ---
 
+
 ## Data Wrangling
+
 
 ```{r load-packages}
 #| label: load-pkgs
@@ -360,16 +362,18 @@ abortion_animate <- ggplot(state_migration_merged_data, aes(x = long, y = lat, g
   labs(subtitle = "Estimated number of people who lived in a different state the previous year over time", caption = "Source: Census") +
   transition_states(Year) +
   labs(title = "Year: {closest_state}") + 
-  theme(plot.title = element_text(hjust = 0.5))
+  theme(plot.title = element_text(hjust = 0.5))  
 
 animate(abortion_animate, renderer = gifski_renderer())
 ```
+
 
 **ABSTRACT**
 
 **INTRODUCTION**
 
 **LINEAR MODEL**
+
 
 ```{r}
 editing <- all_variables_dataset %>% 
@@ -398,3 +402,4 @@ geom_point()+
 geom_smooth(method = "lm", se=F)+
 coord_flip(ylim = c(40000,120000), xlim = c(25000, 700000))
 ```
+
