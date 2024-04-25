@@ -130,6 +130,6 @@
     "href": "presentation.html#current-thoughts-future-plans",
     "title": "Why Move?",
     "section": "Current Thoughts & Future Plans",
-    "text": "Current Thoughts & Future Plans\n\nNowLater\n\n\nWe have:\n\nSpacial-temporal visualizations for:\n\nabortion ratios\nmedian household income\npartisanship\n\nSpacial visualization for cultural classification\nLinear model for interstate migration using the above mentioned explanatory variables with interaction between median household income and abortions\n\n\n\n\nShiny App\n\nDashboard with editing to select different variables\n\nLinear Model\n\nrefining\nvisualizing important findings\n\nOverlaying visualizations with migration data\nPredictive Modeling"
+    "text": "Current Thoughts & Future Plans\n\nNowLater\n\n\nWe have:\n\nSpacial-temporal visualizations for:\n\nabortion ratios\nmedian household income\npartisanship\n\nSpacial visualization for cultural classification\nLinear model for interstate migration using the above explanatory variables with interaction between median household income and abortions\n\n\n\n\nShiny App\n\nDashboard with editing to select different variables\n\nLinear Model\n\nrefining\nvisualizing important findings\n\nOverlaying visualizations with migration data\nPredictive Modeling"
   }
 ]

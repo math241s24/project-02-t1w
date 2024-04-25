@@ -282,7 +282,7 @@ all_variables_dataset<- full_join(everything_but_immigration,
 head(all_variables_dataset)
 ```
 
-## Reason for Choosing this Dataset
+## Reason for Choosing these Datasets
 
 *High level goal:* To gather data from online repositories regarding immigration and immigration policy, and use it to create a spacial-temporal visualization illustrating our topic of interest in a clear and concise fashion.
 
