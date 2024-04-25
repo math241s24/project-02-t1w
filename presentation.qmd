@@ -42,13 +42,10 @@ knitr::opts_chunk$set(
   )
 ```
 
-```{r}
+```{r, echo = FALSE}
 #| label: load-data
 #| include: false
-#| 
-```
 
-```{r, echo = FALSE}
 state_economic_data <- read.csv("data/state_economic_data.csv")
 
 state_abortion_data <- read.csv("data/abortions_dataset.csv")
@@ -462,7 +459,7 @@ We have:
 
 -   Spacial visualization for cultural classification
 
--   Linear model for interstate migration using the above mentioned explanatory variables with interaction between median household income and abortions
+-   Linear model for interstate migration using the above explanatory variables with interaction between median household income and abortions
 
 ## Later
 

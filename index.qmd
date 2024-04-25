@@ -351,11 +351,11 @@ state_migration_data <- state_immigration_data
 
 state_migration_map_data <- map_data("state")
 
-state_migration_merged_data <- merge(state_migration_map_data, state_migration_data, by.x = "region", by.y = "Current residence in", na.rm= TRUE)
+state_migration_merged_data <- merge(state_migration_map_data, state_migration_data, by.x = "region", by.y = "Current residence in", na.rm = TRUE)
 
 abortion_animate <- ggplot(state_migration_merged_data, aes(x = long, y = lat, group = group)) +
-  geom_polygon(aes(fill = `Different state of residence 1 year ago: Estimate`)) +
-  scale_fill_gradient(name = "# of Newcomers", low = "lightgreen", high = "darkgreen", na.value = "grey", guide = "legend") +
+  geom_polygon(aes(fill = `Different state of residence 1 year ago: Estimate`), na.rm = TRUE) +
+  scale_fill_gradient(name = "# of Newcomers", low = "lavender", high = "violet", na.value = "grey", guide = "legend") +
   theme_void() +
   labs(subtitle = "Estimated number of people who lived in a different state the previous year over time", caption = "Source: Census") +
   transition_states(Year) +
