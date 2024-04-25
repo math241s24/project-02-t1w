@@ -308,7 +308,7 @@ How is interstate migration affected by state abortion policy, economic status, 
 
 ## Weekly Plan of Attack
 
-*Week 10* - Submit proposal.qmd, research changes in sanctuary state policy between 2013-2022 in the states we've chosen, for the purpose of visualizing.
+*Week 10* - Submit proposal.qmd, wrangle and visualize select variables from each dataset.
 
 *Week 11* - Wrangle and tidy dataset, will include removing rows, using a handful of pivot_longer functions, etc. Update proposal and project to include feedback from peers. We will work to create visualizations tied to geospatial data. The sanctuary state visualization will also be conducted. Outline the writeup.
 
