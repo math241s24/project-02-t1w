@@ -427,12 +427,13 @@ animate(election_animate, renderer = gifski_renderer())
 editing <- all_variables_dataset %>% 
   filter(YEAR == '2008')
 
-all_variables_dataset <- anti_join(all_variables_dataset, editing, by = 'YEAR')
 immigration_mlr <- lm(`Different state of residence 1 year ago: Estimate` ~ 
-                        `Median Household Income` * 
-                        `Abortions_per_1000_women` * 
-                        `R Share of General` + 
-                        `political_culture`,
+                        `political_culture`+
+                        `Median Household Income`+
+                        `Median Household Income`:`Abortions_per_1000_women`+ 
+                        `R Share of General`:`Abortions_per_1000_women`+
+                        `Abortions_per_1000_women`+
+                        `R Share of General`, 
                       data = all_variables_dataset, na.rm = TRUE)
 
 get_regression_table(immigration_mlr)
