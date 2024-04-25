@@ -361,10 +361,10 @@ all_variables_dataset <- anti_join(all_variables_dataset, editing, by = 'YEAR')
 
 ```{r}
 immigration_mlr <- lm(`Different state of residence 1 year ago: Estimate` ~ 
-                        `Median Household Income` + 
-                        `political_culture` + 
-                        `Abortions_per_1000_women` + 
-                        `R Share of General`, 
+                        `Median Household Income` * 
+                        `Abortions_per_1000_women` * 
+                        `R Share of General` + 
+                        `political_culture`,
                       data = all_variables_dataset, na.rm = TRUE)
 
 get_regression_table(immigration_mlr)
