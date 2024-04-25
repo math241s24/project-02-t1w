@@ -25,13 +25,13 @@ library(readr)
 #| label: load-data
 #| message: false
 
-presidential_election_data <- read.csv("data/presidential_election_data.csv")
-
 state_economic_data <- read.csv("data/state_economic_data.csv")
 
-state_abortion_data <- read.csv("data/abortion_dataset.csv")
+state_abortion_data <- read.csv("data/abortions_dataset.csv")
 
 state_immigration_data <- read.csv("data/interstate_migration_data.csv")
+
+presidential_election_data <- read.csv("data/presidential_election_data.csv")
 
 state <- c("Alabama", 
            "Alaska", 
@@ -137,80 +137,56 @@ political_culture <- c("Traditionalistic",
                        "Moralistic", 
                        "Individualistic")
 
-political_culture_elazar <- data.frame(state, political_culture)
+political_culture_elazar <- data.frame(state, political_culture) %>%
+  mutate(state = tolower(state))
 
-political_culture_elazar
-
-head(presidential_election_data)
+head(political_culture_elazar)
 ```
 
 ```{r}
 state_abortion_data <- state_abortion_data %>%
-  slice(-(1:6)) %>%
+  slice(-(1:1)) %>%
   rename(
-    Area = 1,
-    Number = 2,
-    Rate = 3,
-    Ratio = 4,
-    `Out-of-State (number and percentage)` = 5,
-    Year = 6
+	Area = 1,
+	Number = 2,
+	Rate = 3,
+	Ratio = 4,
+	`Out-of-State (number and percentage)` = 5,
+	Year = 6
   ) %>%
   mutate(
-    Number = ifelse(Number %in% c("N/A", 
-                                  "—¶¶", 
-                                  "—***", 
-                                  "—", 
-                                  "—†††", 
-                                  "—§§§", 
-                                  "---", 
-                                  "--***", 
-                                  "---***", 
-                                  "---†††"), NA, Number),
-    Rate = ifelse(Rate %in% c("N/A", 
-                              "—¶¶", 
-                              "—***", 
-                              "—", 
-                              "—†††", 
-                              "—§§§", 
-                              "---", 
-                              "--***", 
-                              "---***", 
-                              "---†††"), NA, Rate),
-    Ratio = ifelse(Ratio %in% c("N/A", 
-                                "—¶¶", 
-                                "—***", 
-                                "—", 
-                                "—†††", 
-                                "—§§§", 
-                                "---", 
-                                "--***", 
-                                "---***", 
-                                "---†††"), NA, Ratio),
-    `Out-of-State (number and percentage)` = ifelse(`Out-of-State (number and percentage)` %in% c("N/A",
-      "—¶¶",
-      "—***", 
-      "—", 
-      "—†††", 
-      "—§§§", 
-      "---", 
-      "--***", 
-      "---***", 
-      "---†††"), NA, `Out-of-State (number and percentage)`)
+	Number = ifelse(Number %in% c("N/A"), NA, Number),
+	Rate = ifelse(Rate %in% c("N/A"), NA, Rate),
+	Ratio = ifelse(Ratio %in% c("N/A"), NA, Ratio),
+	`Out-of-State (number and percentage)` = 
+	  ifelse(`Out-of-State (number and percentage)` %in% 
+	           c("N/A"), NA, `Out-of-State (number and percentage)`)
   )  %>%
-  filter(!(Number %in% c("25,619", 
-                         "30,555", 
-                         "35,398", 
-                         "37,523", 
-                         "73,815", 
-                         "89,469", 
-                         "59,854", 
-                         "27,471"))) 
+  filter(!(Number %in% c("25,619",
+                     	"30,555",
+                     	"35,398",
+                     	"37,523",
+                     	"73,815",
+                     	"89,469",
+                     	"59,854",
+                     	"27,471"))) %>%
+  mutate(Number = as.numeric(gsub(",", "", Number)),
+     	Rate = as.numeric(gsub(",", "", Rate)),
+     	Ratio = as.numeric(gsub(",", "", Ratio)),
+     	Year = as.numeric(gsub(",", "", Year))
+     	) %>%
+  mutate(Area = tolower(Area)) %>%
+  mutate(Abortions_per_1000_women = Rate) %>%
+  mutate(Abortions_per_1000_live_births = Ratio) %>%
+  mutate(`Out_of_state_abortions(number and percentage)` = `Out-of-State (number and percentage)`) %>%
+  select(Area, Abortions_per_1000_women, Abortions_per_1000_live_births, Year, `Out_of_state_abortions(number and percentage)`)
+
 head(state_abortion_data)
 ```
 
 ```{r}
 state_immigration_data <- state_immigration_data %>%
-   slice(-(1:6)) %>%
+  slice(-(1:6)) %>%
   rename(
     `Current residence in`  = 1,
     `Population 1 year and over: Estimate` = 2,
@@ -223,7 +199,22 @@ state_immigration_data <- state_immigration_data %>%
     `Different state of residence 1 year ago: MOE` = 9,
     Year = 10
   ) %>%
-  slice(-(1:6))
+  slice(-(1:6)) %>%
+  mutate(
+    `Population 1 year and over: Estimate` = as.numeric(
+      gsub(",", "", `Population 1 year and over: Estimate`)
+      ),
+    `Same house 1 year ago: Estimate` = as.numeric(
+      gsub(",", "", `Same house 1 year ago: Estimate`)
+      ), 
+    `Same state of residence 1 year ago: Estimate` = as.numeric(
+      gsub(",", "", `Same state of residence 1 year ago: Estimate`)
+      ), 
+    `Different state of residence 1 year ago: Estimate` = as.numeric(
+      gsub(",", "", `Different state of residence 1 year ago: Estimate`)
+      )
+    ) 
+
 head(state_immigration_data)
 ```
 
@@ -236,9 +227,14 @@ state_economic_data <- state_economic_data %>%
   ) %>%
   mutate(
     State = ifelse(State == "", NA, State),
-    `Median Household Income` = ifelse(`Median Household Income` == "", NA, `Median Household Income`)
+    `Median Household Income` = 
+      ifelse(`Median Household Income` == "", NA, `Median Household Income`)
     ) %>%
-  filter(complete.cases(.))
+  filter(complete.cases(.)) %>%
+  mutate(`Median Household Income` = 
+           as.numeric(gsub(",", "", `Median Household Income`))) %>%
+  mutate(State = tolower(State))
+
 head(state_economic_data)
 ```
 
@@ -246,13 +242,44 @@ head(state_economic_data)
 presidential_election_data <- presidential_election_data %>%
   subset(select = -c(X1, X, TOTAL.VOTES, TOTAL.VOTES..)) %>%
   mutate(
-    FEC.ID = ifelse(FEC.ID == "n/a", NA, FEC.ID)
-  )
+    FEC.ID = ifelse(FEC.ID == "n/a", NA, FEC.ID),
+    `GENERAL.RESULTS` = as.numeric(gsub(",", "", `GENERAL.RESULTS`)),
+    STATE = tolower(STATE),
+    `R Share of General` = as.numeric(gsub("%", "", `GENERAL..`)) / 100
+  ) %>%
+  filter(PARTY == "R") %>%
+  select(STATE, `R Share of General`, YEAR)
+
+head(presidential_election_data)
 ```
 
 ```{r}
-d1_d2 <- full_join(political_culture_elazar, presidential_election_data, by = c("state" = "STATE"))
-head(d1_d2)
+abortion_and_economic <- full_join(state_abortion_data, 
+             state_economic_data,
+             by = c("Area" = "State",
+                    "Year" = "Year"))
+
+abortion_and_economic <- abortion_and_economic %>%
+  mutate(Year = as.numeric(gsub(",", "", Year)))
+
+state_immigration_data <- state_immigration_data %>%
+  mutate(Year = as.numeric(gsub(",", "", Year))) 
+
+culture_president <- left_join(presidential_election_data, 
+                               political_culture_elazar,
+                               by = c("STATE"= "state")) 
+
+everything_but_immigration <- left_join(culture_president, 
+                                        abortion_and_economic,
+                                        by = c("STATE" = "Area",
+                                               "YEAR" = "Year"))
+
+all_variables_dataset<- full_join(everything_but_immigration, 
+                                  state_immigration_data, 
+                                  by = c("STATE" = "Current residence in", 
+                                         "YEAR" = "Year"))
+
+head(all_variables_dataset)
 ```
 
 ## Reason for Choosing this Dataset

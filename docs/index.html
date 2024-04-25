@@ -120,8 +120,7 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#abstract" id="toc-abstract" class="nav-link active" data-scroll-target="#abstract">Abstract</a></li>
-  <li><a href="#introduction" id="toc-introduction" class="nav-link" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#data-wrangling" id="toc-data-wrangling" class="nav-link active" data-scroll-target="#data-wrangling">Data Wrangling</a></li>
   </ul>
 </nav>
     </div>
@@ -152,11 +151,50 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
-<section id="abstract" class="level2">
-<h2 class="anchored" data-anchor-id="abstract">Abstract</h2>
-</section>
-<section id="introduction" class="level2">
-<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<section id="data-wrangling" class="level2">
+<h2 class="anchored" data-anchor-id="data-wrangling">Data Wrangling</h2>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-6-1.gif" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-7-1.gif" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-8-1.gif" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p><strong>ABSTRACT</strong></p>
+<p><strong>INTRODUCTION</strong></p>
+<p><strong>LINEAR MODEL</strong></p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 7
+  term                    estimate std_error statistic p_value lower_ci upper_ci
+  &lt;chr&gt;                      &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+1 intercept                -3.46e5 131161.      -2.64    0.01   -6.07e5  -8.52e4
+2 `Median Household Inco…   3.09e0      1.01     3.06    0.003   1.08e0   5.10e0
+3 political_culture: Mor…   6.05e3  26388.       0.229   0.819  -4.64e4   5.85e4
+4 political_culture: Tra…   1.39e5  30156.       4.61    0       7.90e4   1.99e5
+5 Abortions_per_1000_wom…   1.38e4   2749.       5.01    0       8.30e3   1.92e4
+6 `R Share of General`      1.85e5 144550.       1.28    0.204  -1.02e5   4.73e5</code></pre>
+</div>
+</div>
+<p>“The best way to visualize multiple linear regression is to <strong>create a visualization for each independent variable while holding the other independent variables constant</strong>.”</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
 
 
 </section>
