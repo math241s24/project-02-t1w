@@ -370,10 +370,11 @@ immigration_mlr <- lm(`Different state of residence 1 year ago: Estimate` ~
 get_regression_table(immigration_mlr)
 ```
 
-"The best way to visualize multiple linear regression is to **create a visualization for each independent variable while holding the other independent variables constant**."
-
 ```{r}
-ggplot(data = all_variables_dataset, aes(x = "Different state of residence 1 year ago: Estimate", y ="Median Household Income", color = political_culture))+
+ggplot(data = all_variables_dataset, 
+       aes(x = "Different state of residence 1 year ago: Estimate", 
+           y ="Median Household Income", 
+           color = political_culture))+
 geom_point()+
-  geom_smooth(method = "lm", se=F)
+geom_smooth(method = "lm", se=F)
 ```
