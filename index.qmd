@@ -351,7 +351,7 @@ state_migration_data <- state_immigration_data
 
 state_migration_map_data <- map_data("state")
 
-state_migration_merged_data <- merge(state_migration_map_data, state_migration_data, by.x = "region", by.y = "Current residence in", all.x = TRUE)
+state_migration_merged_data <- merge(state_migration_map_data, state_migration_data, by.x = "region", by.y = "Current residence in", na.rm= TRUE)
 
 abortion_animate <- ggplot(state_migration_merged_data, aes(x = long, y = lat, group = group)) +
   geom_polygon(aes(fill = `Different state of residence 1 year ago: Estimate`)) +
@@ -395,5 +395,6 @@ ggplot(data = all_variables_dataset,
            y =`Median Household Income`, 
            color = political_culture))+
 geom_point()+
-geom_smooth(method = "lm", se=F)
+geom_smooth(method = "lm", se=F)+
+coord_flip(ylim = c(40000,120000), xlim = c(25000, 700000))
 ```
