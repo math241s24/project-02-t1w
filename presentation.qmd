@@ -433,6 +433,18 @@ animate(election_animate, renderer = gifski_renderer())
 
 ------------------------------------------------------------------------
 
-## Future Plans
+## Current Thoughts and Future Plans
+
+-   Shiny App
+
+    -   Dashboard with editing to select different variable
+
+-   Linear Model
+
+    -   refining
+
+    -   visualizing important findings
+
+-   Overlaying visualizations with migration data
 
 ------------------------------------------------------------------------
