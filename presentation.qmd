@@ -48,8 +48,6 @@ knitr::opts_chunk$set(
 #| 
 ```
 
----
-
 ```{r, echo = FALSE}
 state_economic_data <- read.csv("data/state_economic_data.csv")
 
@@ -256,8 +254,6 @@ presidential_election_data <- presidential_election_data %>%
   filter(PARTY == "R") %>%
   select(STATE, `R Share of General`, YEAR)
 
-str(presidential_election_data)
-
 abortion_and_economic <- full_join(state_abortion_data, 
              state_economic_data,
              by = c("Area" = "State",
@@ -283,8 +279,6 @@ all_variables_dataset<- full_join(everything_but_immigration,
 
 
 ```
-
----
 
 ## Question 
 
@@ -348,7 +342,90 @@ head(state_immigration_data, 10)
 
 ---
 
-## Visualizations
+## Visualizations & Time Series
+
+::: panel-tabset
+## Abortions
+
+```{r}
+abortion_data <- state_abortion_data
+
+abortion_map_data <- map_data("state")
+
+abortion_merged_data <- merge(abortion_map_data, abortion_data, by.x = "region", by.y = "Area", all.x = TRUE)
+
+abortion_animate <- ggplot(abortion_merged_data, aes(x = long, y = lat, group = group)) +
+  geom_polygon(aes(fill = `Abortions_per_1000_women`)) +
+  scale_fill_gradient(name = "Abortions per 1000 Women", low = "lightgreen", high = "darkgreen", na.value = "grey", guide = "legend") +
+  theme_void() +
+  labs(subtitle = "Abortions per 1000 Women Aged 15-44 Over Time", caption = "Source: CDC") +
+  transition_states(Year) +
+  labs(title = "Year: {closest_state}") + 
+  theme(plot.title = element_text(hjust = 0.5))  
+
+animate(abortion_animate, renderer = gifski_renderer())
+```
+
+## Economics
+
+```{r}
+econ_data <- state_economic_data
+
+econ_map_data <- map_data("state")
+
+econ_merged_data <- merge(econ_map_data, econ_data, by.x = "region", by.y = "State", all.x = TRUE)
+
+econ_animate <- ggplot(econ_merged_data, aes(x = long, y = lat, group = group)) +
+  geom_polygon(aes(fill = `Median Household Income`)) +
+  scale_fill_gradient(name = "Income", low = "lightblue", high = "darkblue", na.value = "grey", guide = "legend") +
+  theme_void() +
+  labs(subtitle = "Real Median Household Income over Time", caption = "Source: FRED") +
+  transition_states(Year) +
+  labs(title = "Year: {closest_state}") + 
+  theme(plot.title = element_text(hjust = 0.5))  
+
+animate(econ_animate, renderer = gifski_renderer())
+```
+
+## Culture
+
+```{r}
+political_data <- political_culture_elazar
+
+political_map_data <- map_data("state")
+
+political_merged_data <- merge(political_map_data, political_data, by.x = "region", by.y = "state", all.x = TRUE)
+
+political_map <- ggplot(political_merged_data, aes(x = long, y = lat, group = group)) +
+  geom_polygon(aes(fill = political_culture), color = "black", size = 0.2) +
+  scale_fill_manual(values = c("lightgreen", "magenta", "lightyellow"), name = "") +
+  theme_void() +
+  labs(subtitle = "Elazar's Cultural Classification by State", caption = "Source: Daniel Elazar")  
+
+political_map
+```
+
+## Partisanship
+
+```{r}
+election_data <- presidential_election_data
+
+election_map_data <- map_data("state")
+
+election_merged_data <- merge(election_map_data, election_data, by.x = "region", by.y = "STATE", all.x = TRUE)
+
+election_animate <- ggplot(election_merged_data, aes(x = long, y = lat, group = group)) +
+  geom_polygon(aes(fill = `R Share of General`)) +
+  scale_fill_gradient(name = "% of Vote", low = "pink", high = "darkred", na.value = "grey", guide = "legend") +
+  theme_void() +
+  labs(subtitle = "Republican Share of Vote By State in General Presidential Election", caption = "Source: FEC") +
+  transition_states(YEAR) +
+  labs(title = "Year: {closest_state}") + 
+  theme(plot.title = element_text(hjust = 0.5))  
+
+animate(election_animate, renderer = gifski_renderer())
+```
+:::
 
 ---
 
