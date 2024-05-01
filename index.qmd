@@ -20,7 +20,6 @@ execute:
 library(tidyverse)
 library(dplyr)
 library(tidyr)
-library(leaflet)
 library(tmap)
 library(readr)
 library(leaflet)
@@ -28,6 +27,7 @@ library(maps)
 library(gganimate)
 library(moderndive)
 library(ggplot2)
+library(shiny)
 ```
 
 ```{r load-data}
@@ -148,9 +148,7 @@ political_culture <- c("Traditionalistic",
 
 political_culture_elazar <- data.frame(state, political_culture) %>%
   mutate(state = tolower(state))
-```
 
-```{r}
 state_abortion_data <- state_abortion_data %>%
   slice(-(1:1)) %>%
   rename(
@@ -185,9 +183,7 @@ state_abortion_data <- state_abortion_data %>%
   mutate(Abortions_per_1000_live_births = Ratio) %>%
   mutate(`Out_of_state_abortions(number and percentage)` = `Out-of-State (number and percentage)`) %>%
   select(Area, Abortions_per_1000_women, Abortions_per_1000_live_births, Year, `Out_of_state_abortions(number and percentage)`)
-```
 
-```{r}
 state_immigration_data <- state_immigration_data %>%
    slice(-(1:6)) %>%
   rename(
@@ -215,11 +211,21 @@ state_immigration_data <- state_immigration_data %>%
       ), 
     `Different state of residence 1 year ago: Estimate` = as.numeric(
       gsub(",", "", `Different state of residence 1 year ago: Estimate`)
+      ),
+     `Different state of residence 1 year ago: MOE` = as.numeric(
+      gsub(",", "", "+/-", `Different state of residence 1 year ago: MOE`)
+      ),
+     `Same state of residence 1 year ago: MOE` = as.numeric(
+      gsub(",", "", "+/-", `Same state of residence 1 year ago: MOE`)
+      ),
+    `Same house 1 year ago: MOE` = as.numeric(
+      gsub(",", "", "+/-", `Same house 1 year ago: MOE`)
+      ), 
+    `Population 1 year and over: MOE` = as.numeric(
+      gsub(",", "", "+/-", `Population 1 year and over: MOE`)
       )
     ) 
-```
 
-```{r}
 state_economic_data <- state_economic_data %>%
   rename(
     State  = 1,
@@ -233,9 +239,7 @@ state_economic_data <- state_economic_data %>%
   filter(complete.cases(.)) %>%
   mutate(`Median Household Income` = as.numeric(gsub(",", "", `Median Household Income`))) %>%
   mutate(State = tolower(State))
-```
 
-```{r}
 presidential_election_data <- presidential_election_data %>%
   subset(select = -c(X1, X, TOTAL.VOTES, TOTAL.VOTES..)) %>%
   mutate(
@@ -246,9 +250,7 @@ presidential_election_data <- presidential_election_data %>%
   ) %>%
   filter(PARTY == "R") %>%
   select(STATE, `R Share of General`, YEAR)
-```
 
-```{r}
 abortion_and_economic <- full_join(state_abortion_data, 
              state_economic_data,
              by = c("Area" = "State",
@@ -282,7 +284,7 @@ econ_merged_data <- merge(econ_map_data, econ_data, by.x = "region", by.y = "Sta
 
 econ_animate <- ggplot(econ_merged_data, aes(x = long, y = lat, group = group)) +
   geom_polygon(aes(fill = `Median Household Income`)) +
-  scale_fill_gradient(name = "Income", low = "lightblue", high = "darkblue", na.value = "grey", guide = "legend") +
+  scale_fill_gradient(name = "Income", low = "white", high = "darkblue", na.value = "grey", guide = "legend") +
   theme_void() +
   labs(subtitle = "Real Median Household Income over Time", caption = "Source: FRED") +
   transition_states(Year) +
@@ -301,7 +303,7 @@ abortion_merged_data <- merge(abortion_map_data, abortion_data, by.x = "region",
 
 abortion_animate <- ggplot(abortion_merged_data, aes(x = long, y = lat, group = group)) +
   geom_polygon(aes(fill = `Abortions_per_1000_women`)) +
-  scale_fill_gradient(name = "Abortions per 1000 Women", low = "lightgreen", high = "darkgreen", na.value = "grey", guide = "legend") +
+  scale_fill_gradient(name = "Abortions per 1000 Women", low = "white", high = "darkgreen", na.value = "grey", guide = "legend") +
   theme_void() +
   labs(subtitle = "Abortions per 1000 Women Aged 15-44 Over Time", caption = "Source: CDC") +
   transition_states(Year) +
@@ -320,7 +322,7 @@ election_merged_data <- merge(election_map_data, election_data, by.x = "region",
 
 election_animate <- ggplot(election_merged_data, aes(x = long, y = lat, group = group)) +
   geom_polygon(aes(fill = `R Share of General`)) +
-  scale_fill_gradient(name = "% of Vote", low = "pink", high = "darkred", na.value = "grey", guide = "legend") +
+  scale_fill_gradient(name = "% of Vote", low = "white", high = "darkred", na.value = "grey", guide = "legend") +
   theme_void() +
   labs(subtitle = "Republican Share of Vote By State in General Presidential Election", caption = "Source: FEC") +
   transition_states(YEAR) +
@@ -355,7 +357,7 @@ state_migration_merged_data <- merge(state_migration_map_data, state_migration_d
 
 abortion_animate <- ggplot(state_migration_merged_data, aes(x = long, y = lat, group = group)) +
   geom_polygon(aes(fill = `Different state of residence 1 year ago: Estimate`)) +
-  scale_fill_gradient(name = "# of Newcomers", low = "lightgreen", high = "darkgreen", na.value = "grey", guide = "legend") +
+  scale_fill_gradient(name = "# of Newcomers", low = "white", high = "darkgreen", na.value = "grey", guide = "legend") +
   theme_void() +
   labs(subtitle = "Estimated number of people who lived in a different state the previous year over time", caption = "Source: Census") +
   transition_states(Year) +
@@ -399,4 +401,67 @@ ggplot(data = all_variables_dataset,
 geom_point()+
 geom_smooth(method = "lm", se=F)+
 coord_flip(ylim = c(40000,120000), xlim = c(25000, 700000))
+```
+
+```{r}
+all_variables_dataset <- subset(all_variables_dataset, YEAR != 2016)
+
+usMap <- function(dataset, variable) {
+  us_map_data <- map_data("state")
+  merged_data <- merge(us_map_data, dataset, by.x = "region", by.y = "STATE", all.x = TRUE)
+
+  color_gradients <- list(
+    "R Share of General" = c("white", "deeppink4"), 
+    "Median Household Income" = c("white", "darkcyan"), 
+    "Abortions_per_1000_women" = c("white", "chartreuse4"),
+    "Abortions_per_1000_live_births" = c("white", "chartreuse4"),
+    "Same house 1 year ago: Estimate" = c("white", "chocolate4"),
+    "Population 1 year and over: Estimate" = c("white", "chocolate4"),
+    "Same state of residence 1 year ago: Estimate" = c("white", "chocolate4"),
+    "Different state of residence 1 year ago: Estimate" = c("white", "chocolate4")
+  )
+  
+  gradient_colors <- color_gradients[[variable]]
+  
+  g <- ggplot(merged_data) +
+    geom_polygon(aes(x = long, y = lat, group = group, fill = .data[[variable]]),
+                 color = "gray70", size = 0.5) +
+    scale_fill_gradient(
+      low = gradient_colors[1], 
+      high = gradient_colors[2],
+      na.value = "grey",
+      limits = range(dataset[[variable]])
+    ) +
+    theme_void() +
+    theme(legend.position = "bottom") +
+    theme(legend.key.width = unit(2, "cm"))
+  
+  return(g)
+}
+```
+
+```{r}
+ui <- fluidPage(
+  titlePanel("US Map Shiny App"),
+  mainPanel(
+    selectInput("variable", "Variable:", 
+                choices = colnames(all_variables_dataset)[!colnames(all_variables_dataset) %in% c("STATE", "YEAR", "Out_of_state_abortions(number and percentage)", "Different state of residence 1 year ago: MOE", "Same state of residence 1 year ago: MOE", "Same house 1 year ago: MOE", "Population 1 year and over: MOE", "political_culture")]),
+    selectInput("year", "Year:", choices = unique(all_variables_dataset$YEAR)),
+    plotOutput("us_map", width = "750px", height = "450px")
+  )
+)
+
+server <- function(input, output) {
+  output$us_map <- renderPlot({
+    subset_data <- all_variables_dataset[all_variables_dataset$YEAR == input$year, ]
+    
+    if (nrow(subset_data) == 0) {
+      return("No data available for the selected year.")
+    }
+    
+    usMap(subset_data, input$variable)
+  })
+}
+
+shinyApp(ui = ui, server = server)
 ```
