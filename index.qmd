@@ -305,8 +305,10 @@ econ_merged_data <- merge(econ_map_data, econ_data, by.x = "region", by.y = "Sta
 
 econ_animate <- ggplot(econ_merged_data, aes(x = long, y = lat, group = group)) +
   geom_polygon(aes(fill = `Median Household Income`)) +
-  scale_fill_gradient(name = "Income", low = "white", high = "darkblue", na.value = "grey", guide = "legend") +
+  scale_fill_gradient(name = "Income in USD", low = "white", high = "darkblue", na.value = "grey", guide = guide_colorbar(title.position = "top")) +
   theme_void() +
+  theme(legend.position = "bottom") +
+  theme(legend.key.width = unit(2, "cm")) +
   labs(subtitle = "Real Median Household Income over Time", caption = "Source: FRED") +
   transition_states(Year) +
   labs(title = "Year: {closest_state}") + 
@@ -323,13 +325,15 @@ abortion_map_data <- map_data("state")
 abortion_merged_data <- merge(abortion_map_data, abortion_data, by.x = "region", by.y = "Area", all.x = TRUE)
 
 abortion_animate <- ggplot(abortion_merged_data, aes(x = long, y = lat, group = group)) +
-  geom_polygon(aes(fill = `Abortions_per_1000_women`)) +
-  scale_fill_gradient(name = "Abortions per 1000 Women", low = "white", high = "darkgreen", na.value = "grey", guide = "legend") +
+  geom_polygon(aes(fill = Abortions_per_1000_women)) +
+  scale_fill_gradient(name = "Abortions per 1000 Women", low = "white", high = "darkgreen", na.value = "grey", guide = guide_colorbar(title.position = "top")) +
   theme_void() +
+  theme(legend.position = "bottom") +
+  theme(legend.key.width = unit(2, "cm")) +
   labs(subtitle = "Abortions per 1000 Women Aged 15-44 Over Time", caption = "Source: CDC") +
   transition_states(Year) +
   labs(title = "Year: {closest_state}") + 
-  theme(plot.title = element_text(hjust = 0.5))  
+  theme(plot.title = element_text(hjust = 0.5))
 
 animate(abortion_animate, renderer = gifski_renderer())
 ```
@@ -343,9 +347,28 @@ election_merged_data <- merge(election_map_data, election_data, by.x = "region",
 
 election_animate <- ggplot(election_merged_data, aes(x = long, y = lat, group = group)) +
   geom_polygon(aes(fill = `R Share of General`)) +
-  scale_fill_gradient(name = "% of Vote", low = "white", high = "darkred", na.value = "grey", guide = "legend") +
+  scale_fill_gradient(name = "Percent of Vote Republican", low = "white", high = "darkred", na.value = "grey", guide = guide_colorbar(title.position = "top")) +
   theme_void() +
+  theme(legend.position = "bottom") +
+  theme(legend.key.width = unit(2, "cm")) +
   labs(subtitle = "Republican Share of Vote By State in General Presidential Election", caption = "Source: FEC") +
+  transition_states(YEAR) +
+  labs(title = "Year: {closest_state}") + 
+  theme(plot.title = element_text(hjust = 0.5))  
+
+animate(election_animate, renderer = gifski_renderer())
+```
+
+```{r}
+election_merged_data <- merge(election_map_data, election_data, by.x = "region", by.y = "STATE", all.x = TRUE)
+
+election_animate <- ggplot(election_merged_data, aes(x = long, y = lat, group = group)) +
+  geom_polygon(aes(fill = (100 - `R Share of General`) - 99)) +
+  scale_fill_gradient(name = "Percent of Vote Democrat", low = "white", high = "darkblue", na.value = "grey", guide = guide_colorbar(title.position = "top")) +
+  theme_void() +
+  theme(legend.position = "bottom") +
+  theme(legend.key.width = unit(2, "cm")) +
+  labs(subtitle = "Democrat Share of Vote By State in General Presidential Election", caption = "Source: FEC") +
   transition_states(YEAR) +
   labs(title = "Year: {closest_state}") + 
   theme(plot.title = element_text(hjust = 0.5))  
@@ -364,6 +387,8 @@ political_map <- ggplot(political_merged_data, aes(x = long, y = lat, group = gr
   geom_polygon(aes(fill = political_culture), color = "black", size = 0.2) +
   scale_fill_manual(values = c("lightgreen", "magenta", "lightyellow"), name = "") +
   theme_void() +
+  theme(legend.position = "bottom") +
+  theme(legend.key.width = unit(2, "cm")) + 
   labs(subtitle = "Elazar's Cultural Classification by State", caption = "Source: Daniel Elazar")  
 
 political_map
@@ -378,8 +403,10 @@ state_migration_merged_data <- merge(state_migration_map_data, state_migration_d
 
 abortion_animate <- ggplot(state_migration_merged_data, aes(x = long, y = lat, group = group)) +
   geom_polygon(aes(fill = `Different state of residence 1 year ago: Estimate`)) +
-  scale_fill_gradient(name = "# of Newcomers", low = "white", high = "darkgreen", na.value = "grey", guide = "legend") +
+  scale_fill_gradient(name = "Percent of New Residents", low = "white", high = "darkgreen", na.value = "grey", guide = guide_colorbar(title.position = "top")) +
   theme_void() +
+  theme(legend.position = "bottom") +
+  theme(legend.key.width = unit(2, "cm")) +
   labs(subtitle = "Estimated number of people who lived in a different state the previous year over time", caption = "Source: Census") +
   transition_states(Year) +
   labs(title = "Year: {closest_state}") + 
@@ -420,6 +447,10 @@ geom_smooth(method = "lm", se=F)+
 coord_flip(ylim = c(40000,120000), xlim = c(25000, 700000))
 ```
 
+## INTERACTIVE DASHBOARD
+
+(provide link)
+
 ```{r}
 all_variables_dataset <- subset(all_variables_dataset, YEAR != 2016)
 
@@ -455,15 +486,9 @@ usMap <- function(dataset, variable) {
   
   return(g)
 }
-```
 
-## INTERACTIVE DASHBOARD
-
-(provide link)
-
-```{r}
 ui <- fluidPage(
-  titlePanel("US Map Shiny App"),
+  titlePanel("Why Move? Finding State Attractiveness"),
   mainPanel(
     selectInput("variable", "Variable:", 
                 choices = colnames(all_variables_dataset)[!colnames(all_variables_dataset) %in% c("STATE", "YEAR", "Out_of_state_abortions(number and percentage)", "Different state of residence 1 year ago: MOE", "Same state of residence 1 year ago: MOE", "Same house 1 year ago: MOE", "Population 1 year and over: MOE", "political_culture")]),

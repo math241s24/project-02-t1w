@@ -102,7 +102,7 @@
     "href": "index.html",
     "title": "Why Move? Finding State Attractiveness",
     "section": "",
-    "text": "ABSTRACT\nINTRODUCTION\nLINEAR MODEL\n\n\n# A tibble: 8 × 7\n  term                    estimate std_error statistic p_value lower_ci upper_ci\n  &lt;chr&gt;                      &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;\n1 intercept               -4.47e+5   1.97e+5    -2.26    0.026 -8.39e+5 -5.41e+4\n2 political_culture: Mor… -2.03e+4   2.73e+4    -0.742   0.46  -7.46e+4  3.41e+4\n3 political_culture: Tra…  1.24e+5   3.08e+4     4.01    0      6.24e+4  1.85e+5\n4 `Median Household Inco…  7.90e+0   2.21e+0     3.58    0.001  3.51e+0  1.23e+1\n5 Abortions_per_1000_wom…  2.72e+4   1.65e+4     1.65    0.103 -5.64e+3  6.01e+4\n6 `R Share of General`    -2.01e+5   2.38e+5    -0.843   0.402 -6.75e+5  2.73e+5\n7 `Median Household Inco… -5   e-1   2.02e-1    -2.48    0.015 -9.02e-1 -9.8 e-2\n8 Abortions_per_1000_wom…  3.99e+4   2.26e+4     1.77    0.081 -5.00e+3  8.48e+4"
+    "text": "This project gathers data from online sources regarding various cultural, political, and social factors and uses it to create multiple spacial-temporal visualization illustrating the variation in the selected factors between states, with the goal of identifying patters in state-to-state migration."
   },
   {
     "objectID": "index.html#data-wrangling",
@@ -150,8 +150,8 @@
     "objectID": "index.html#abstract",
     "href": "index.html#abstract",
     "title": "Why Move? Finding State Attractiveness",
-    "section": "ABSTRACT",
-    "text": "ABSTRACT\nThis project gathers data from online sources regarding various cultural, political, and social factors and uses it to create multiple spacial-temporal visualization illustrating the variation in the selected factors between states, with the goal of identifying patters in state-to-state migration."
+    "section": "",
+    "text": "This project gathers data from online sources regarding various cultural, political, and social factors and uses it to create multiple spacial-temporal visualization illustrating the variation in the selected factors between states, with the goal of identifying patters in state-to-state migration."
   },
   {
     "objectID": "index.html#visualizations",
