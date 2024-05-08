@@ -1,5 +1,5 @@
 ---
-title: "The Attractiveness of Cities"
+title: "Why Move? Finding State Attractiveness"
 subtitle: "Project 2"
 author: "James Aas, Audrey Mills, Jameson Oates"
 format: html
@@ -9,8 +9,6 @@ execute:
   warning: false
   message: false
 ---
-
-## Data Wrangling
 
 ```{r load-packages}
 #| label: load-pkgs
@@ -33,6 +31,7 @@ library(shiny)
 ```{r load-data}
 #| label: load-data
 #| message: false
+#| warning: false
 
 state_economic_data <- read.csv("data/state_economic_data.csv")
 
@@ -275,6 +274,28 @@ all_variables_dataset<- full_join(everything_but_immigration,
                    "YEAR" = "Year"))
 ```
 
+## **ABSTRACT**
+
+This project gathers data from online sources regarding various cultural, political, and social factors and uses it to create multiple spacial-temporal visualization illustrating the variation in the selected factors between states, with the goal of identifying patters in state-to-state migration.
+
+## **INTRODUCTION**
+
+The variables examined here are state abortion policy, economic status, political culture, and presidential vote in select years.
+
+The dataset "state_immigration_data," from the US Census, describes the population estimates and margin of errors of populations, per state and year, of people living in the state one year ago, living in the state in the same house one year ago, living in a different state one year ago, and total population. Recorded are the years 2012, 2016, and 2020. This dataset lets us track the population levels of each state over time, based on who lived where one year before being recorded.
+
+The dataset "state_abortion_data," from the CDC, contains information on the number of abortions per 1000 women in each state in the years 2008, 2012, 2016, and 2020. It also includes information on abortions per 1000 live births and the number of out-of-state abortions. This lets us visualize an important social factor that might motivate people to migrate in or out of their state of residence.
+
+The dataset "presidential_election_data," from the Federal Election Commission, contains the share of Republican votes in each state per election in 2008, 2012, and 2020. This lets us visualize the political demographics in states, which might motivate interstate migration.
+
+The dataset "state_economic_data," from the Federal Reserve, contains information on median household income for each state in the years 2008, 2012, 2016, and 2020. This lets us see if there might be economic reasons for interstate migration, in correlation with the other datasets.
+
+The dataset "political_culture_elazar" correlates each state with a culture tag, as theorized by Daniel Elazar in 1966. This will allow us to recognize patterns between state culture and the other variables of our analysis.
+
+The other datasets combine the above variables of interest in different ways for the purpose of building a predictive model.
+
+## VISUALIZATIONS
+
 ```{r}
 econ_data <- state_economic_data
 
@@ -367,11 +388,7 @@ abortion_animate <- ggplot(state_migration_merged_data, aes(x = long, y = lat, g
 animate(abortion_animate, renderer = gifski_renderer())
 ```
 
-**ABSTRACT**
-
-**INTRODUCTION**
-
-**LINEAR MODEL**
+## **LINEAR MODEL**
 
 ```{r}
 editing <- all_variables_dataset %>% 
@@ -439,6 +456,10 @@ usMap <- function(dataset, variable) {
   return(g)
 }
 ```
+
+## INTERACTIVE DASHBOARD
+
+(provide link)
 
 ```{r}
 ui <- fluidPage(

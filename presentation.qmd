@@ -1,5 +1,5 @@
 ---
-title: "Why Move?"
+title: "Why Move? Finding State Attractiveness"
 subtitle: "Project 2"
 author: "Jameson Oates, James Aas, Audrey Mills"
 title-slide-attributes:

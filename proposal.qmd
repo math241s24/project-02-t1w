@@ -1,5 +1,5 @@
 ---
-title: "Why Move?"
+title: "Why Move? Finding State Attractiveness"
 subtitle: "Proposal"
 authors: "James Aas, Audrey Mills, Jameson Oates"
 format: html
@@ -284,7 +284,7 @@ head(all_variables_dataset)
 
 ## Reason for Choosing these Datasets
 
-*High level goal:* To gather data from online repositories regarding immigration and immigration policy, and use it to create a spacial-temporal visualization illustrating our topic of interest in a clear and concise fashion.
+*High level goal:* To gather data from online repositories regarding various cultural, political, and social factors, and use it to create a spacial-temporal visualization illustrating our topic of interest in a clear and concise fashion.
 
 We are interested in analyzing how interstate migration is affected by different social, cultural, and political factors. We chose to focus on looking at each state's abortion policy, economic status, political culture, and presidential vote in select years to see if patterns in interstate migration emerge.
 

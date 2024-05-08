@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>The Attractiveness of Cities</title>
+<title>The Attractiveness of Cities - Why Move? Finding State Attractiveness</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -154,7 +154,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#datasets" id="toc-datasets" class="nav-link active" data-scroll-target="#datasets">Datasets</a></li>
-  <li><a href="#reason-for-choosing-this-dataset" id="toc-reason-for-choosing-this-dataset" class="nav-link" data-scroll-target="#reason-for-choosing-this-dataset">Reason for Choosing this Dataset</a></li>
+  <li><a href="#reason-for-choosing-these-datasets" id="toc-reason-for-choosing-these-datasets" class="nav-link" data-scroll-target="#reason-for-choosing-these-datasets">Reason for Choosing these Datasets</a></li>
   <li><a href="#questions-and-analysis-plan" id="toc-questions-and-analysis-plan" class="nav-link" data-scroll-target="#questions-and-analysis-plan">Questions and Analysis Plan</a></li>
   <li><a href="#weekly-plan-of-attack" id="toc-weekly-plan-of-attack" class="nav-link" data-scroll-target="#weekly-plan-of-attack">Weekly Plan of Attack</a></li>
   </ul>
@@ -165,7 +165,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">The Attractiveness of Cities</h1>
+<h1 class="title">Why Move? Finding State Attractiveness</h1>
 <p class="subtitle lead">Proposal</p>
 </div>
 
@@ -339,28 +339,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">Number =</span> <span class="fu">ifelse</span>(Number <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"N/A"</span>), <span class="cn">NA</span>, Number),</span>
 <span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">Rate =</span> <span class="fu">ifelse</span>(Rate <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"N/A"</span>), <span class="cn">NA</span>, Rate),</span>
 <span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">Ratio =</span> <span class="fu">ifelse</span>(Ratio <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"N/A"</span>), <span class="cn">NA</span>, Ratio),</span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Out-of-State (number and percentage)</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">ifelse</span>(<span class="st">`</span><span class="at">Out-of-State (number and percentage)</span><span class="st">`</span> <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"N/A"</span>), <span class="cn">NA</span>, <span class="st">`</span><span class="at">Out-of-State (number and percentage)</span><span class="st">`</span>)</span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>  )  <span class="sc">%&gt;%</span></span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span>(Number <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"25,619"</span>,</span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>                        <span class="st">"30,555"</span>,</span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>                        <span class="st">"35,398"</span>,</span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>                        <span class="st">"37,523"</span>,</span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>                        <span class="st">"73,815"</span>,</span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>                        <span class="st">"89,469"</span>,</span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>                        <span class="st">"59,854"</span>,</span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>                        <span class="st">"27,471"</span>))) <span class="sc">%&gt;%</span></span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Number =</span> <span class="fu">as.numeric</span>(<span class="fu">gsub</span>(<span class="st">","</span>, <span class="st">""</span>, Number)),</span>
-<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>        <span class="at">Rate =</span> <span class="fu">as.numeric</span>(<span class="fu">gsub</span>(<span class="st">","</span>, <span class="st">""</span>, Rate)),</span>
-<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>        <span class="at">Ratio =</span> <span class="fu">as.numeric</span>(<span class="fu">gsub</span>(<span class="st">","</span>, <span class="st">""</span>, Ratio)),</span>
-<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>        <span class="at">Year =</span> <span class="fu">as.numeric</span>(<span class="fu">gsub</span>(<span class="st">","</span>, <span class="st">""</span>, Year))</span>
-<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>        ) <span class="sc">%&gt;%</span></span>
-<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Area =</span> <span class="fu">tolower</span>(Area)) <span class="sc">%&gt;%</span></span>
-<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Abortions_per_1000_women =</span> Rate) <span class="sc">%&gt;%</span></span>
-<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Abortions_per_1000_live_births =</span> Ratio) <span class="sc">%&gt;%</span></span>
-<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="st">`</span><span class="at">Out_of_state_abortions(number and percentage)</span><span class="st">`</span> <span class="ot">=</span> <span class="st">`</span><span class="at">Out-of-State (number and percentage)</span><span class="st">`</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Area, Abortions_per_1000_women, Abortions_per_1000_live_births, Year, <span class="st">`</span><span class="at">Out_of_state_abortions(number and percentage)</span><span class="st">`</span>)</span>
-<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(state_abortion_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Out-of-State (number and percentage)</span><span class="st">`</span> <span class="ot">=</span> </span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>      <span class="fu">ifelse</span>(<span class="st">`</span><span class="at">Out-of-State (number and percentage)</span><span class="st">`</span> <span class="sc">%in%</span> </span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>               <span class="fu">c</span>(<span class="st">"N/A"</span>), <span class="cn">NA</span>, <span class="st">`</span><span class="at">Out-of-State (number and percentage)</span><span class="st">`</span>)</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>  )  <span class="sc">%&gt;%</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span>(Number <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"25,619"</span>,</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>                        <span class="st">"30,555"</span>,</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>                        <span class="st">"35,398"</span>,</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>                        <span class="st">"37,523"</span>,</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>                        <span class="st">"73,815"</span>,</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>                        <span class="st">"89,469"</span>,</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>                        <span class="st">"59,854"</span>,</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>                        <span class="st">"27,471"</span>))) <span class="sc">%&gt;%</span></span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Number =</span> <span class="fu">as.numeric</span>(<span class="fu">gsub</span>(<span class="st">","</span>, <span class="st">""</span>, Number)),</span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>        <span class="at">Rate =</span> <span class="fu">as.numeric</span>(<span class="fu">gsub</span>(<span class="st">","</span>, <span class="st">""</span>, Rate)),</span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>        <span class="at">Ratio =</span> <span class="fu">as.numeric</span>(<span class="fu">gsub</span>(<span class="st">","</span>, <span class="st">""</span>, Ratio)),</span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>        <span class="at">Year =</span> <span class="fu">as.numeric</span>(<span class="fu">gsub</span>(<span class="st">","</span>, <span class="st">""</span>, Year))</span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>        ) <span class="sc">%&gt;%</span></span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Area =</span> <span class="fu">tolower</span>(Area)) <span class="sc">%&gt;%</span></span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Abortions_per_1000_women =</span> Rate) <span class="sc">%&gt;%</span></span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Abortions_per_1000_live_births =</span> Ratio) <span class="sc">%&gt;%</span></span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="st">`</span><span class="at">Out_of_state_abortions(number and percentage)</span><span class="st">`</span> <span class="ot">=</span> <span class="st">`</span><span class="at">Out-of-State (number and percentage)</span><span class="st">`</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Area, Abortions_per_1000_women, Abortions_per_1000_live_births, Year, <span class="st">`</span><span class="at">Out_of_state_abortions(number and percentage)</span><span class="st">`</span>)</span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(state_abortion_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>        Area Abortions_per_1000_women Abortions_per_1000_live_births Year
 1    alabama                      6.0                             99 2020
@@ -380,7 +382,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>state_immigration_data <span class="ot">&lt;-</span> state_immigration_data <span class="sc">%&gt;%</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>   <span class="fu">slice</span>(<span class="sc">-</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="sc">-</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>)) <span class="sc">%&gt;%</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(</span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Current residence in</span><span class="st">`</span>  <span class="ot">=</span> <span class="dv">1</span>,</span>
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Population 1 year and over: Estimate</span><span class="st">`</span> <span class="ot">=</span> <span class="dv">2</span>,</span>
@@ -464,13 +466,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
 <span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
 <span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">State =</span> <span class="fu">ifelse</span>(State <span class="sc">==</span> <span class="st">""</span>, <span class="cn">NA</span>, State),</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Median Household Income</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">ifelse</span>(<span class="st">`</span><span class="at">Median Household Income</span><span class="st">`</span> <span class="sc">==</span> <span class="st">""</span>, <span class="cn">NA</span>, <span class="st">`</span><span class="at">Median Household Income</span><span class="st">`</span>)</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">%&gt;%</span></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">complete.cases</span>(.)) <span class="sc">%&gt;%</span></span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="st">`</span><span class="at">Median Household Income</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">as.numeric</span>(<span class="fu">gsub</span>(<span class="st">","</span>, <span class="st">""</span>, <span class="st">`</span><span class="at">Median Household Income</span><span class="st">`</span>))) <span class="sc">%&gt;%</span></span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">State =</span> <span class="fu">tolower</span>(State))</span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(state_economic_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Median Household Income</span><span class="st">`</span> <span class="ot">=</span> </span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>      <span class="fu">ifelse</span>(<span class="st">`</span><span class="at">Median Household Income</span><span class="st">`</span> <span class="sc">==</span> <span class="st">""</span>, <span class="cn">NA</span>, <span class="st">`</span><span class="at">Median Household Income</span><span class="st">`</span>)</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">%&gt;%</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">complete.cases</span>(.)) <span class="sc">%&gt;%</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="st">`</span><span class="at">Median Household Income</span><span class="st">`</span> <span class="ot">=</span> </span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>           <span class="fu">as.numeric</span>(<span class="fu">gsub</span>(<span class="st">","</span>, <span class="st">""</span>, <span class="st">`</span><span class="at">Median Household Income</span><span class="st">`</span>))) <span class="sc">%&gt;%</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">State =</span> <span class="fu">tolower</span>(State))</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(state_economic_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>              State Median Household Income Year
 1 the united states                   76660 2020
@@ -596,19 +600,25 @@ Caused by warning:
 </div>
 </div>
 </section>
-<section id="reason-for-choosing-this-dataset" class="level2">
-<h2 class="anchored" data-anchor-id="reason-for-choosing-this-dataset">Reason for Choosing this Dataset</h2>
-<p><em>High level goal:</em> To gather data from online repositories regarding immigration and immigration policy, and use it to create a spacial-temporal visualization illustrating our topic of interest in a clear and concise fashion.</p>
-<p>We are interested in exploring the relationship between sanctuary cities and immigration, especially those in the South Atlantic and East South Central regions of the US (Kentucky, West Virginia, Virginia, Maryland, Delaware, DC, Tennessee, North Carolina, South Carolina, Georgia, Alabama, Mississippi, and Florida). We will focus on numbers of incomers within and around sanctuary cities, as well as their change over time (between roughly 2013-2022). We are also curious if the number of immigrants compared to nonimmigrants arriving to the city changed based on the city’s immigration policy. We will incorporate the introduction of different immigration policies into our analysis in order to determine correlations between these policies and immigration to the South.</p>
-<p><em>Description of Dataset:</em> This dataset contains data on immigration from the Department of Homeland Security (DHS). It groups immigration data by state, reporting on the number of lawful permanent residents (and their rank compared to other states), as well as the number of nonimmigrants, naturalizations, refugees, and asylees over the past ten years. We are pulling the data relevant to the states in our region of interest (Kentucky, West Virginia, Virginia, Maryland, Delaware, DC, Tennessee, North Carolina, South Carolina, Georgia, Alabama, Mississippi, and Florida). We will use the variables for total arrival counts of various types of immigrants, as well as years, to find the correlation between immigration and immigration policy and determine the effect, if any, that policy has on immigration to the South.</p>
+<section id="reason-for-choosing-these-datasets" class="level2">
+<h2 class="anchored" data-anchor-id="reason-for-choosing-these-datasets">Reason for Choosing these Datasets</h2>
+<p><em>High level goal:</em> To gather data from online repositories regarding various cultural, political, and social factors, and use it to create a spacial-temporal visualization illustrating our topic of interest in a clear and concise fashion.</p>
+<p>We are interested in analyzing how interstate migration is affected by different social, cultural, and political factors. We chose to focus on looking at each state’s abortion policy, economic status, political culture, and presidential vote in select years to see if patterns in interstate migration emerge.</p>
+<p><em>Descriptions of Datasets</em>: There are several datasets used in the project.</p>
+<p>The dataset “state_immigration_data,” from the US Census, describes the population estimates and margin of errors of populations, per state and year, of people living in the state one year ago, living in the state in the same house one year ago, living in a different state one year ago, and total population. Recorded are the years 2012, 2016, and 2020. This dataset lets us track the population levels of each state over time, based on who lived where one year before being recorded.</p>
+<p>The dataset “state_abortion_data,” from the CDC, contains information on the number of abortions per 1000 women in each state in the years 2008, 2012, 2016, and 2020. It also includes information on abortions per 1000 live births and the number of out-of-state abortions. This lets us visualize an important social factor that might motivate people to migrate in or out of their state of residence.</p>
+<p>The dataset “presidential_election_data,” from the Federal Election Commission, contains the share of Republican votes in each state per election in 2008, 2012, and 2020. This lets us visualize the political demographics in states, which might motivate interstate migration.</p>
+<p>The dataset “state_economic_data,” from the Federal Reserve, contains information on median household income for each state in the years 2008, 2012, 2016, and 2020. This lets us see if there might be economic reasons for interstate migration, in correlation with the other datasets.</p>
+<p>The dataset “political_culture_elazar” correlates each state with a culture tag, as theorized by Daniel Elazar in 1966. This will allow us to recognize patterns between state culture and the other variables of our analysis.</p>
+<p>The other datasets combine the above variables of interest in different ways for the purpose of building a predictive model.</p>
 </section>
 <section id="questions-and-analysis-plan" class="level2">
 <h2 class="anchored" data-anchor-id="questions-and-analysis-plan">Questions and Analysis Plan</h2>
-<p>Our primary research question is: How does a city’s status as a sanctuary city affect the number of incoming immigrants compared to nonimmigrants, and how has this relationship changed over time?</p>
+<p>How is interstate migration affected by state abortion policy, economic status, political culture, and presidential vote?</p>
 </section>
 <section id="weekly-plan-of-attack" class="level2">
 <h2 class="anchored" data-anchor-id="weekly-plan-of-attack">Weekly Plan of Attack</h2>
-<p><em>Week 10</em> - Submit proposal.qmd, research changes in sanctuary state policy between 2013-2022 in the states we’ve chosen, for the purpose of visualizing.</p>
+<p><em>Week 10</em> - Submit proposal.qmd, wrangle and visualize select variables from each dataset.</p>
 <p><em>Week 11</em> - Wrangle and tidy dataset, will include removing rows, using a handful of pivot_longer functions, etc. Update proposal and project to include feedback from peers. We will work to create visualizations tied to geospatial data. The sanctuary state visualization will also be conducted. Outline the writeup.</p>
 <p><em>Week 12</em> - Complete work on the writeup, which will go in the index.qmd file. This will be done by all group members. Begin work on presentation.qmd.</p>
 <p><em>Week 13</em> - Touch up the presentation.qmd file, practice the presentation to ensure it fits within time constraints.</p>

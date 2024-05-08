@@ -8,7 +8,7 @@
 
 <meta name="author" content="James Aas, Audrey Mills, Jameson Oates">
 
-<title>The Attractiveness of Cities</title>
+<title>The Attractiveness of Cities - Why Move? Finding State Attractiveness</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -120,7 +120,11 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#data-wrangling" id="toc-data-wrangling" class="nav-link active" data-scroll-target="#data-wrangling">Data Wrangling</a></li>
+  <li><a href="#abstract" id="toc-abstract" class="nav-link active" data-scroll-target="#abstract"><strong>ABSTRACT</strong></a></li>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link" data-scroll-target="#introduction"><strong>INTRODUCTION</strong></a></li>
+  <li><a href="#visualizations" id="toc-visualizations" class="nav-link" data-scroll-target="#visualizations">VISUALIZATIONS</a></li>
+  <li><a href="#linear-model" id="toc-linear-model" class="nav-link" data-scroll-target="#linear-model"><strong>LINEAR MODEL</strong></a></li>
+  <li><a href="#interactive-dashboard" id="toc-interactive-dashboard" class="nav-link" data-scroll-target="#interactive-dashboard">INTERACTIVE DASHBOARD</a></li>
   </ul>
 </nav>
     </div>
@@ -129,7 +133,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">The Attractiveness of Cities</h1>
+<h1 class="title">Why Move? Finding State Attractiveness</h1>
 <p class="subtitle lead">Project 2</p>
 </div>
 
@@ -151,56 +155,77 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
-<section id="data-wrangling" class="level2">
-<h2 class="anchored" data-anchor-id="data-wrangling">Data Wrangling</h2>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-6-1.gif" class="img-fluid"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-1-1.gif" class="img-fluid"></p>
+</div>
+</div>
+<section id="abstract" class="level2">
+<h2 class="anchored" data-anchor-id="abstract"><strong>ABSTRACT</strong></h2>
+<p>This project gathers data from online sources regarding various cultural, political, and social factors and uses it to create multiple spacial-temporal visualization illustrating the variation in the selected factors between states, with the goal of identifying patters in state-to-state migration.</p>
+</section>
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction"><strong>INTRODUCTION</strong></h2>
+<p>The variables examined here are state abortion policy, economic status, political culture, and presidential vote in select years.</p>
+<p>The dataset “state_immigration_data,” from the US Census, describes the population estimates and margin of errors of populations, per state and year, of people living in the state one year ago, living in the state in the same house one year ago, living in a different state one year ago, and total population. Recorded are the years 2012, 2016, and 2020. This dataset lets us track the population levels of each state over time, based on who lived where one year before being recorded.</p>
+<p>The dataset “state_abortion_data,” from the CDC, contains information on the number of abortions per 1000 women in each state in the years 2008, 2012, 2016, and 2020. It also includes information on abortions per 1000 live births and the number of out-of-state abortions. This lets us visualize an important social factor that might motivate people to migrate in or out of their state of residence.</p>
+<p>The dataset “presidential_election_data,” from the Federal Election Commission, contains the share of Republican votes in each state per election in 2008, 2012, and 2020. This lets us visualize the political demographics in states, which might motivate interstate migration.</p>
+<p>The dataset “state_economic_data,” from the Federal Reserve, contains information on median household income for each state in the years 2008, 2012, 2016, and 2020. This lets us see if there might be economic reasons for interstate migration, in correlation with the other datasets.</p>
+<p>The dataset “political_culture_elazar” correlates each state with a culture tag, as theorized by Daniel Elazar in 1966. This will allow us to recognize patterns between state culture and the other variables of our analysis.</p>
+<p>The other datasets combine the above variables of interest in different ways for the purpose of building a predictive model.</p>
+</section>
+<section id="visualizations" class="level2">
+<h2 class="anchored" data-anchor-id="visualizations">VISUALIZATIONS</h2>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-2-1.gif" class="img-fluid"></p>
 </div>
 </div>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-7-1.gif" class="img-fluid"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-3-1.gif" class="img-fluid"></p>
 </div>
 </div>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-8-1.gif" class="img-fluid"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-5-1.gif" class="img-fluid"></p>
 </div>
 </div>
-<div class="cell">
-<div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-10-1.gif" class="img-fluid"></p>
-</div>
-</div>
-<p><strong>ABSTRACT</strong></p>
-<p><strong>INTRODUCTION</strong></p>
-<p><strong>LINEAR MODEL</strong></p>
+</section>
+<section id="linear-model" class="level2">
+<h2 class="anchored" data-anchor-id="linear-model"><strong>LINEAR MODEL</strong></h2>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 10 × 7
-   term                   estimate std_error statistic p_value lower_ci upper_ci
-   &lt;chr&gt;                     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
- 1 intercept               5.06e+3    8.32e5     0.006   0.995  -1.65e6   1.66e6
- 2 `Median Household Inc…  1.76e+0    1.21e1     0.146   0.884  -2.23e1   2.58e1
- 3 Abortions_per_1000_wo…  2.14e+4    7.26e4     0.295   0.768  -1.23e5   1.66e5
- 4 `R Share of General`   -9.68e+5    1.56e6    -0.622   0.536  -4.07e6   2.13e6
- 5 political_culture: Mo… -2.27e+4    2.78e4    -0.815   0.418  -7.80e4   3.27e4
- 6 political_culture: Tr…  1.31e+5    3.22e4     4.08    0       6.73e4   1.95e5
- 7 `Median Household Inc… -4.33e-1    1.10e0    -0.395   0.694  -2.62e0   1.75e0
- 8 `Median Household Inc…  1.05e+1    2.26e1     0.463   0.645  -3.46e1   5.56e1
- 9 Abortions_per_1000_wo…  3.33e+4    1.49e5     0.224   0.824  -2.63e5   3.30e5
-10 `Median Household Inc…  1.23e-1    2.25e0     0.055   0.956  -4.35e0   4.6 e0</code></pre>
+<pre><code># A tibble: 8 × 7
+  term                    estimate std_error statistic p_value lower_ci upper_ci
+  &lt;chr&gt;                      &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+1 intercept               -4.47e+5   1.97e+5    -2.26    0.026 -8.39e+5 -5.41e+4
+2 political_culture: Mor… -2.03e+4   2.73e+4    -0.742   0.46  -7.46e+4  3.41e+4
+3 political_culture: Tra…  1.24e+5   3.08e+4     4.01    0      6.24e+4  1.85e+5
+4 `Median Household Inco…  7.90e+0   2.21e+0     3.58    0.001  3.51e+0  1.23e+1
+5 Abortions_per_1000_wom…  2.72e+4   1.65e+4     1.65    0.103 -5.64e+3  6.01e+4
+6 `R Share of General`    -2.01e+5   2.38e+5    -0.843   0.402 -6.75e+5  2.73e+5
+7 `Median Household Inco… -5   e-1   2.02e-1    -2.48    0.015 -9.02e-1 -9.8 e-2
+8 Abortions_per_1000_wom…  3.99e+4   2.26e+4     1.77    0.081 -5.00e+3  8.48e+4</code></pre>
 </div>
 </div>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="672"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="interactive-dashboard" class="level2">
+<h2 class="anchored" data-anchor-id="interactive-dashboard">INTERACTIVE DASHBOARD</h2>
+<p>(provide link)</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 
