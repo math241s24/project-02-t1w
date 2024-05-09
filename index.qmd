@@ -451,7 +451,7 @@ get_regression_table(immigration_lm)
 
 ```
 
-The model uses a baseline of individualistic culture. From this baseline we can observe the two conditions. The differences from the baseline are telling, the moralistic cultures have the lowest predicted rate of people from different states moving in, while the traditionalistic states are very similar. Individualistic states are far and above the other two, and has a p-value that leads us to trust the result more than for the other two.
+This model was constructed due to the other model being unable to account for categorical variables. It is possible that some sort of dummy variable system could be constructed to include the variables in the logarithmic model, but that was not the method we settled on. The model uses a baseline of individualistic culture. From this baseline we can observe the two conditions. The differences from the baseline are telling, the moralistic cultures have the lowest predicted rate of people from different states moving in, while the traditionalistic states are very similar. Individualistic states are far and above the other two, and has a p-value that leads us to trust the result more than for the other two.
 
 ## INTERACTIVE DASHBOARD
 
