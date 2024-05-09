@@ -430,24 +430,28 @@ all_variables_dataset <- anti_join(all_variables_dataset, editing, by = 'YEAR')
 ```
 
 ```{r}
-immigration_log_mlr <- lm(log(`Different state of residence 1 year ago: Estimate`) ~
+immigration_log_mlr <- lm(log(`Different_state_rate`) ~
                         log(`Median Household Income`) +
                         log(`Abortions_per_1000_women`) + 
                         log(`R Share of General`), 
                       data = all_variables_dataset, na.rm = TRUE)
 
-get_regression_table(immigration_mlr)
+get_regression_table(immigration_log_mlr)
 ```
 
+The intercept is 7.398, this means that in a state with a log Median household income of \$0, log 0 abortions per 1000 women, and a 0 percent Republican share of the general election, the expected rate of the population that comes from a different state is 7.398. The log estimates are telling as well, for a increase of 1 in log of median household income, there is an associated increase of -0.367 in the number of people from different states entering the state compared to the population in the state at the time, holding all other variables constant. For log of abortions per 1000 women the estimate is a minimal change, and it has a p_value of 0.554, leading us to not have a lot of faith in the estimate. The Republican share of the general election has a similar impact to the median household income, but is slightly less pronounced. The p_value for log of Median Household Income is closest to 0.05, meaning that our trust in that prediction is the highest.
+
 ```{r}
-ggplot(data = all_variables_dataset, 
-       aes(x = `Different state of residence 1 year ago: Estimate`, 
-           y =`Median Household Income`, 
-           color = political_culture))+
-geom_point()+
-geom_smooth(method = "lm", se=F)+
-coord_flip(ylim = c(40000,120000), xlim = c(25000, 700000))
+immigration_lm <- lm(`Different_state_rate` ~
+                        `political_culture`, 
+                      data = all_variables_dataset, na.rm = TRUE
+  )
+
+get_regression_table(immigration_lm)
+
 ```
+
+The model uses a baseline of individualistic culture. From this baseline we can observe the two conditions. The differences from the baseline are telling, the moralistic cultures have the lowest predicted rate of people from different states moving in, while the traditionalistic states are very similar. Individualistic states are far and above the other two, and has a p-value that leads us to trust the result more than for the other two.
 
 ## INTERACTIVE DASHBOARD
 
