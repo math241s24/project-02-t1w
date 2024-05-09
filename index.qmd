@@ -182,6 +182,7 @@ state_abortion_data <- state_abortion_data %>%
   mutate(Abortions_per_1000_live_births = Ratio) %>%
   mutate(`Out_of_state_abortions(number and percentage)` = `Out-of-State (number and percentage)`) %>%
   select(Area, Abortions_per_1000_women, Abortions_per_1000_live_births, Year, `Out_of_state_abortions(number and percentage)`)
+  
 
 state_immigration_data <- state_immigration_data %>%
    slice(-(1:6)) %>%
@@ -222,8 +223,12 @@ state_immigration_data <- state_immigration_data %>%
       ), 
     `Population 1 year and over: MOE` = as.numeric(
       gsub(",", "", "+/-", `Population 1 year and over: MOE`)
-      )
+      ), 
     ) 
+
+
+state_immigration_data<-state_immigration_data %>%
+  mutate(Different_state_rate = `Population 1 year and over: Estimate` / `Different state of residence 1 year ago: Estimate`)
 
 state_economic_data <- state_economic_data %>%
   rename(
@@ -401,18 +406,18 @@ state_migration_map_data <- map_data("state")
 
 state_migration_merged_data <- merge(state_migration_map_data, state_migration_data, by.x = "region", by.y = "Current residence in", na.rm= TRUE)
 
-abortion_animate <- ggplot(state_migration_merged_data, aes(x = long, y = lat, group = group)) +
-  geom_polygon(aes(fill = `Different state of residence 1 year ago: Estimate`)) +
+migration_animate <- ggplot(state_migration_merged_data, aes(x = long, y = lat, group = group)) +
+  geom_polygon(aes(fill = `Different_state_rate`)) +
   scale_fill_gradient(name = "Percent of New Residents", low = "white", high = "darkgreen", na.value = "grey", guide = guide_colorbar(title.position = "top")) +
   theme_void() +
   theme(legend.position = "bottom") +
   theme(legend.key.width = unit(2, "cm")) +
-  labs(subtitle = "Estimated number of people who lived in a different state the previous year over time", caption = "Source: Census") +
+  labs(subtitle = "Estimated percentage of state population over age 1 who lived in a different state the previous year over time", caption = "Source: Census") +
   transition_states(Year) +
   labs(title = "Year: {closest_state}") + 
   theme(plot.title = element_text(hjust = 0.5))  
 
-animate(abortion_animate, renderer = gifski_renderer())
+animate(migration_animate, renderer = gifski_renderer())
 ```
 
 ## **LINEAR MODEL**
@@ -425,13 +430,10 @@ all_variables_dataset <- anti_join(all_variables_dataset, editing, by = 'YEAR')
 ```
 
 ```{r}
-immigration_mlr <- lm(`Different state of residence 1 year ago: Estimate` ~ 
-                        `political_culture`+
-                        `Median Household Income`+
-                        `Median Household Income`:`Abortions_per_1000_women`+ 
-                        `R Share of General`:`Abortions_per_1000_women`+
-                        `Abortions_per_1000_women`+
-                        `R Share of General`, 
+immigration_log_mlr <- lm(log(`Different state of residence 1 year ago: Estimate`) ~
+                        log(`Median Household Income`) +
+                        log(`Abortions_per_1000_women`) + 
+                        log(`R Share of General`), 
                       data = all_variables_dataset, na.rm = TRUE)
 
 get_regression_table(immigration_mlr)
