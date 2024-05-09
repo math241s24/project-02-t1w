@@ -279,9 +279,9 @@ all_variables_dataset<- full_join(everything_but_immigration,
                    "YEAR" = "Year"))
 ```
 
-## **ABSTRACT**
+## **QUESTIONS**
 
-This project gathers data from online sources regarding various cultural, political, and social factors and uses it to create multiple spacial-temporal visualization illustrating the variation in the selected factors between states, with the goal of identifying patters in state-to-state migration.
+This project set out to answer the question “How is interstate migration affected by different socio-economic factors such as state abortion policy, economic status, political culture, and presidential vote?
 
 ## **INTRODUCTION**
 
@@ -420,16 +420,14 @@ migration_animate <- ggplot(state_migration_merged_data, aes(x = long, y = lat, 
 animate(migration_animate, renderer = gifski_renderer())
 ```
 
-## **LINEAR MODEL**
+## **INTERPRETATION OF MODELS**
 
 ```{r}
 editing <- all_variables_dataset %>% 
   filter(YEAR == '2008')
 
 all_variables_dataset <- anti_join(all_variables_dataset, editing, by = 'YEAR')
-```
 
-```{r}
 immigration_log_mlr <- lm(log(`Different_state_rate`) ~
                         log(`Median Household Income`) +
                         log(`Abortions_per_1000_women`) + 
@@ -517,3 +515,9 @@ server <- function(input, output) {
 
 shinyApp(ui = ui, server = server)
 ```
+
+## CONCLUSION
+
+We successfully gathered data from online sources regarding various cultural, political, and social factors and used it to create multiple spatial-temporal visualizations illustrating the variation in the selected factors between states, with the goal of identifying patterns in state-to-state migration. We used this data to create spatial temporal visualizations of these socioeconomic factors, a logarithmic model, and a shiny app. We found that political culture played a significant role in people’s decisions to move between states, namely the moralistic culture. Additionally, the log of median household income had a significant negative effect on interstate migration. These findings are consistent with our initial expectations, although the findings are not without their limitations.
+
+Access to more granular demographic data could have been helpful, as it would have allowed for us to determine explanatory effects, as a result of these factors, on interstate migration. Things such as the race or income of the people moving could play a significant role in why people choose to move. There are likely patterns surrounding these demographic variables that range year to year. However, this was a limitation of our research, as the datasets we found did not contain data at that level of specificity for state-to-state migration. Some of the sample sizes were so small that data being free from demographic information meant that individual identities could not be ascertained. The data included numbers of people going from one state to another so specifically that sometimes the numbers were low enough that it could have posed an issue were demographic information included in the data.
