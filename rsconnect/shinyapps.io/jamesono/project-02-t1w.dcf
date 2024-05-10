@@ -5,9 +5,9 @@ account: jamesono
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 11974905
-bundleId: 8599112
+bundleId: 8599399
 url: https://jamesono.shinyapps.io/project-02-t1w/
 version: 1
 asMultiple: FALSE
 asStatic: FALSE
-ignoredFiles: _quarto.yml|.gitattributes|.github/workflows/publish-site.yml|.github/workflows/README.md|about.qmd|index.qmd|presentation.qmd|proposal.qmd|README.md|styles.css
+ignoredFiles: _quarto.yml|.gitattributes|.github/workflows/publish-site.yml|.github/workflows/README.md|about.qmd|index.qmd|presentation.qmd|proposal.qmd|README.md|styles.css|T1WShinyApp.rmarkdown

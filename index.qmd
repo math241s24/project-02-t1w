@@ -472,7 +472,7 @@ The model uses a baseline of individualistic culture. From this baseline we can 
 
 ## **INTERACTIVE DASHBOARD**
 
-The dashboard can be accessed by running it in RStudio. A screenshot is pictured below:
+The dashboard can be accessed by running it in RStudio. A screenshot is pictured below. It can also be accessed by clicking this link: <https://jamesono.shinyapps.io/project-02-t1w/>
 
 ```{r}
 rsconnect::setAccountInfo(name='jamesono', token='11E2EC17D4FB42DE212783B0C6A4B82E', secret='kQ4wpjs36zEXbUN+4SKgeYGquvFlAoDmVVOfXoRJ')
