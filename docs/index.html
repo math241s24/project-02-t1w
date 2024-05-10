@@ -120,11 +120,13 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#abstract" id="toc-abstract" class="nav-link active" data-scroll-target="#abstract"><strong>ABSTRACT</strong></a></li>
+  <li><a href="#questions" id="toc-questions" class="nav-link active" data-scroll-target="#questions"><strong>QUESTIONS</strong></a></li>
   <li><a href="#introduction" id="toc-introduction" class="nav-link" data-scroll-target="#introduction"><strong>INTRODUCTION</strong></a></li>
-  <li><a href="#visualizations" id="toc-visualizations" class="nav-link" data-scroll-target="#visualizations">VISUALIZATIONS</a></li>
-  <li><a href="#linear-model" id="toc-linear-model" class="nav-link" data-scroll-target="#linear-model"><strong>LINEAR MODEL</strong></a></li>
-  <li><a href="#interactive-dashboard" id="toc-interactive-dashboard" class="nav-link" data-scroll-target="#interactive-dashboard">INTERACTIVE DASHBOARD</a></li>
+  <li><a href="#visualizations" id="toc-visualizations" class="nav-link" data-scroll-target="#visualizations"><strong>VISUALIZATIONS</strong></a></li>
+  <li><a href="#methods" id="toc-methods" class="nav-link" data-scroll-target="#methods"><strong>METHODS</strong></a></li>
+  <li><a href="#interpretation-of-models" id="toc-interpretation-of-models" class="nav-link" data-scroll-target="#interpretation-of-models"><strong>INTERPRETATION OF MODELS</strong></a></li>
+  <li><a href="#interactive-dashboard" id="toc-interactive-dashboard" class="nav-link" data-scroll-target="#interactive-dashboard"><strong>INTERACTIVE DASHBOARD</strong></a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion"><strong>CONCLUSION</strong></a></li>
   </ul>
 </nav>
     </div>
@@ -155,9 +157,9 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
-<section id="abstract" class="level2">
-<h2 class="anchored" data-anchor-id="abstract"><strong>ABSTRACT</strong></h2>
-<p>This project gathers data from online sources regarding various cultural, political, and social factors and uses it to create multiple spacial-temporal visualization illustrating the variation in the selected factors between states, with the goal of identifying patters in state-to-state migration.</p>
+<section id="questions" class="level2">
+<h2 class="anchored" data-anchor-id="questions"><strong>QUESTIONS</strong></h2>
+<p>This project set out to answer the question “How is interstate migration affected by different socio-economic factors such as state abortion policy, economic status, political culture, and presidential vote?</p>
 </section>
 <section id="introduction" class="level2">
 <h2 class="anchored" data-anchor-id="introduction"><strong>INTRODUCTION</strong></h2>
@@ -170,7 +172,7 @@ ul.task-list li input[type="checkbox"] {
 <p>The other datasets combine the above variables of interest in different ways for the purpose of building a predictive model.</p>
 </section>
 <section id="visualizations" class="level2">
-<h2 class="anchored" data-anchor-id="visualizations">VISUALIZATIONS</h2>
+<h2 class="anchored" data-anchor-id="visualizations"><strong>VISUALIZATIONS</strong></h2>
 <div class="cell">
 <div class="cell-output-display">
 <p><img src="index_files/figure-html/unnamed-chunk-1-1.gif" class="img-fluid"></p>
@@ -193,51 +195,66 @@ ul.task-list li input[type="checkbox"] {
 </div>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-5-1.gif" class="img-fluid"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
-</div>
-</div>
-<div class="cell">
-<div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-7-1.gif" class="img-fluid"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-6-1.gif" class="img-fluid"></p>
 </div>
 </div>
 </section>
-<section id="linear-model" class="level2">
-<h2 class="anchored" data-anchor-id="linear-model"><strong>LINEAR MODEL</strong></h2>
+<section id="methods" class="level2">
+<h2 class="anchored" data-anchor-id="methods"><strong>METHODS</strong></h2>
+<p>We gathered data from the US Census, the CDC, FEC, and the Federal Reserve to obtain our variables of interest. Because one of our variables, partisanship in the presidential election, was limited to election years, we decided to only use data from those years in our other variables as well.</p>
+<p>Some datasets originally taken from these websites were very messy, and we had to do a fair amount of data wrangling prior to creating visualizations or interpreting our data. Our datasets were cleaned to include only columns of interest. Generally this included the year, state, explanatory value for our research question, and any related values which we were considering incorporating with our explanatory value (for example, we included both abortions_per_1000_women and abortions_per_1000_live_births in our abortion datatset, as well as data on the number of people who had not moved and total state population in our migration dataset, in case we we decided to us ratios).</p>
+<p>All of the values in all of our datasets were converted to numeric form. We removed NA values in some instances, though we did leave some in, especially within the abortion dataset, as we didn’t want to lose other data on entire states when combining datasets later in the process. In the case of political culture, we simply created a new dataset using Daniel Elazar’s culture classifications for each state. As these classifications are constant, there is no year variable in this dataset.</p>
+<p>Starting with one dataset for each explanatory and response variable, we used a series of left and full join functions to create one dataset which contained all of our variables of interest. The final columns in our all variables dataset were state, Republican share of the general election, year, political culture, abortions per 1000 women, abortions per 1000 live births, the number of out of state abortions, median household income, total state population, number of people who had not moved states in one year, number of people who had moved states in one year, and the number of people who had not moved for every one person who had.</p>
+<p>We used this dataset to create and interpret our logarithmic model, which allowed the coefficient estimates to be better interpreted than a linear model. We chose to use spatial-temporal visualizations for each of the individual variables listed above, using their respective datasets, in order to get a broad idea of how each factor changed over time and by state. A spatial visualization of the US (using the “maps” package) was decided to be the most intuitive option, and shading of each state by the socioeconomic factor in question provided a clear picture of each factor’s variance to between states.</p>
+<p>We chose to animate by year rather than facet wrap, as we thought faceting would be too overwhelming to look at. Our shiny app was created to include a visualization of the US with options to select for each socioeconomic factor and year.</p>
+</section>
+<section id="interpretation-of-models" class="level2">
+<h2 class="anchored" data-anchor-id="interpretation-of-models"><strong>INTERPRETATION OF MODELS</strong></h2>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 8 × 7
+<pre><code># A tibble: 4 × 7
   term                    estimate std_error statistic p_value lower_ci upper_ci
   &lt;chr&gt;                      &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
-1 intercept               -4.47e+5   1.97e+5    -2.26    0.026 -8.39e+5 -5.41e+4
-2 political_culture: Mor… -2.03e+4   2.73e+4    -0.742   0.46  -7.46e+4  3.41e+4
-3 political_culture: Tra…  1.24e+5   3.08e+4     4.01    0      6.24e+4  1.85e+5
-4 `Median Household Inco…  7.90e+0   2.21e+0     3.58    0.001  3.51e+0  1.23e+1
-5 Abortions_per_1000_wom…  2.72e+4   1.65e+4     1.65    0.103 -5.64e+3  6.01e+4
-6 `R Share of General`    -2.01e+5   2.38e+5    -0.843   0.402 -6.75e+5  2.73e+5
-7 `Median Household Inco… -5   e-1   2.02e-1    -2.48    0.015 -9.02e-1 -9.8 e-2
-8 Abortions_per_1000_wom…  3.99e+4   2.26e+4     1.77    0.081 -5.00e+3  8.48e+4</code></pre>
+1 intercept                  7.40      2.33      3.18    0.002    2.78    12.0  
+2 log(`Median Household …   -0.367     0.213    -1.72    0.088   -0.79     0.056
+3 log(Abortions_per_1000…    0.033     0.055     0.594   0.554   -0.077    0.142
+4 log(`R Share of Genera…   -0.28      0.207    -1.36    0.178   -0.691    0.13 </code></pre>
 </div>
 </div>
+<p>The intercept is 7.398, which indicates that in a state with a log Median household income of $0, log 0 abortions per 1000 women, and a 0 percent Republican share of the general election, the expected percentage of the population that comes from a different state is 7.398.</p>
+<p>The log estimates are telling as well, for a increase of 1 in log of median household income, there is an associated increase of -0.367 in the number of people from different states entering the state compared to the population in the state at the time, holding all other variables constant.</p>
+<p>For log of abortions per 1000 women, the estimate is a minimal change, with a p-value of 0.554, leading us to have little faith in the estimate. The Republican share of the general election has a similar impact to the median household income, but is slightly less pronounced. The p-value for log of Median Household Income is closest to 0.05, meaning that our trust in that prediction is the highest.</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 7
+  term                    estimate std_error statistic p_value lower_ci upper_ci
+  &lt;chr&gt;                      &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+1 intercept                  40.9       2.39    17.1     0         36.2    45.6 
+2 political_culture: Mor…    -5.44      3.38    -1.61    0.111    -12.1     1.27
+3 political_culture: Tra…    -3.15      3.49    -0.903   0.369    -10.1     3.78</code></pre>
+</div>
+</div>
+<p>This model was constructed because the other model was unable to account for categorical variables. It is possible that some sort of dummy variable system could be constructed to include the variables in the logarithmic model, but that was not the method we settled on.</p>
+<p>The model uses a baseline of individualistic culture. From this baseline we can observe the two conditions. The differences from the baseline are telling, the moralistic cultures have the lowest predicted rate of people from different states moving in, while the traditionalistic states are very similar. Individualistic states are far and above the other two, and has a p-value that leads us to trust the result more than for the other two.</p>
+</section>
+<section id="interactive-dashboard" class="level2">
+<h2 class="anchored" data-anchor-id="interactive-dashboard"><strong>INTERACTIVE DASHBOARD</strong></h2>
+<p>The dashboard can be accessed by running it in RStudio. A screenshot is pictured below:</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </section>
-<section id="interactive-dashboard" class="level2">
-<h2 class="anchored" data-anchor-id="interactive-dashboard">INTERACTIVE DASHBOARD</h2>
-<p>(provide link)</p>
-<div class="cell">
-<div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
-</div>
-</div>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion"><strong>CONCLUSION</strong></h2>
+<p>We successfully gathered data from online sources regarding various cultural, political, and social factors and used it to create multiple spatial-temporal visualizations illustrating the variation in the selected factors between states, with the goal of identifying patterns in state-to-state migration. We used this data to create spatial temporal visualizations of these socioeconomic factors, a logarithmic model, and a shiny app. We found that political culture played a significant role in people’s decisions to move between states, namely the moralistic culture. Additionally, the log of median household income had a significant negative effect on interstate migration. These findings are consistent with our initial expectations, although the findings are not without their limitations.</p>
+<p>Access to more granular demographic data could have been helpful, as it would have allowed for us to determine explanatory effects, as a result of these factors, on interstate migration. Things such as the race or income of the people moving could play a significant role in why people choose to move. There are likely patterns surrounding these demographic variables that range year to year. However, this was a limitation of our research, as the datasets we found did not contain data at that level of specificity for state-to-state migration. Some of the sample sizes were so small that data being free from demographic information meant that individual identities could not be ascertained. The data included numbers of people going from one state to another so specifically that sometimes the numbers were low enough that it could have posed an issue were demographic information included in the data.</p>
 
 
 </section>

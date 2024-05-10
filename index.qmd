@@ -299,7 +299,7 @@ The dataset "political_culture_elazar" correlates each state with a culture tag,
 
 The other datasets combine the above variables of interest in different ways for the purpose of building a predictive model.
 
-## VISUALIZATIONS
+## **VISUALIZATIONS**
 
 ```{r}
 econ_data <- state_economic_data
@@ -412,7 +412,7 @@ migration_animate <- ggplot(state_migration_merged_data, aes(x = long, y = lat, 
   theme_void() +
   theme(legend.position = "bottom") +
   theme(legend.key.width = unit(2, "cm")) +
-  labs(subtitle = "Estimated percentage of state population over age 1 who lived in a different state the previous year over time", caption = "Source: Census") +
+  labs(subtitle = "Estimated percentage of state population who lived in a different state the previous year", caption = "Source: Census") +
   transition_states(Year) +
   labs(title = "Year: {closest_state}") + 
   theme(plot.title = element_text(hjust = 0.5))  
@@ -422,11 +422,19 @@ animate(migration_animate, renderer = gifski_renderer())
 
 ## **METHODS**
 
-	We gathered data from the US Census, the CDC, FEC, and the Federal Reserve in order to obtain our variables of interest. Because one of our variables, partisanship in the presidential election, was limited to election years, we decided to only use data from those years in our other variables as well. Some datasets originally taken from these websites were very messy, and we had to do a fair amount of data wrangling prior to creating visualizations or interpreting our data. Our datasets were cleaned to include only columns of interest. Generally this included the year, state, explanatory value for our research question, and any related values which we were considering incorporating with our explanatory value (for example, we included both abortions_per_1000_women and abortions_per_1000_live_births in our abortion datatset, as well as data on the number of people who had not moved and total state population in our migration dataset, in case we we decided to us ratios). All of the values in all of our datasets were converted to numeric form. We removed NA values in some instances, though we did leave some in, especially within the abortion dataset, as we didn’t want to lose other data on entire states when combining datasets later in the process. In the case of political culture, we simply created a new dataset, using Daniel Elazar’s culture classifications for each state. As these classifications are constant, there is no year variable in this dataset. 
+We gathered data from the US Census, the CDC, FEC, and the Federal Reserve to obtain our variables of interest. Because one of our variables, partisanship in the presidential election, was limited to election years, we decided to only use data from those years in our other variables as well.
 
-	Starting with one dataset for each explanatory and response variable, we used a series of left and full join functions to create one dataset which contained all of our variables of interest. The final columns in our all variables dataset were state, Republican share of the general election, year, political culture, abortions per 1000 women, abortions per 1000 live births, the number of out of state abortions, median household income, total state population, number of people who had not moved states in one year, number of people who had moved states in one year, and the number of people who had not moved for every one person who had . We used this dataset to create and interpret our logarithmic model, which allowed the coefficient estimates to be better interpreted than a linear model. We chose to use spatial-temporal visualizations for each of the individual variables listed above, using their respective datasets, in order to get a broad idea of how each factor changed over time and by state. A spatial visualization of the US (using the usMap package) was decided to be the most intuitive option, and shading of each state by the socioeconomic factor in question provided a clear picture of each factor’s variance to between states. We chose to animate by year rather than facet wrap, as we thought faceting would be too overwhelming to look at. Our shiny app was created to include a visualization of the US with options to select for each socioeconomic factor and year.
+Some datasets originally taken from these websites were very messy, and we had to do a fair amount of data wrangling prior to creating visualizations or interpreting our data. Our datasets were cleaned to include only columns of interest. Generally this included the year, state, explanatory value for our research question, and any related values which we were considering incorporating with our explanatory value (for example, we included both abortions_per_1000_women and abortions_per_1000_live_births in our abortion datatset, as well as data on the number of people who had not moved and total state population in our migration dataset, in case we we decided to us ratios).
 
-## **INTERPRETATION OF MODELS** 
+All of the values in all of our datasets were converted to numeric form. We removed NA values in some instances, though we did leave some in, especially within the abortion dataset, as we didn’t want to lose other data on entire states when combining datasets later in the process. In the case of political culture, we simply created a new dataset using Daniel Elazar’s culture classifications for each state. As these classifications are constant, there is no year variable in this dataset.
+
+Starting with one dataset for each explanatory and response variable, we used a series of left and full join functions to create one dataset which contained all of our variables of interest. The final columns in our all variables dataset were state, Republican share of the general election, year, political culture, abortions per 1000 women, abortions per 1000 live births, the number of out of state abortions, median household income, total state population, number of people who had not moved states in one year, number of people who had moved states in one year, and the number of people who had not moved for every one person who had.
+
+We used this dataset to create and interpret our logarithmic model, which allowed the coefficient estimates to be better interpreted than a linear model. We chose to use spatial-temporal visualizations for each of the individual variables listed above, using their respective datasets, in order to get a broad idea of how each factor changed over time and by state. A spatial visualization of the US (using the "maps" package) was decided to be the most intuitive option, and shading of each state by the socioeconomic factor in question provided a clear picture of each factor’s variance to between states.
+
+We chose to animate by year rather than facet wrap, as we thought faceting would be too overwhelming to look at. Our shiny app was created to include a visualization of the US with options to select for each socioeconomic factor and year.
+
+## **INTERPRETATION OF MODELS**
 
 ```{r}
 editing <- all_variables_dataset %>% 
@@ -443,7 +451,11 @@ immigration_log_mlr <- lm(log(`Different_state_rate`) ~
 get_regression_table(immigration_log_mlr)
 ```
 
-The intercept is 7.398, this means that in a state with a log Median household income of \$0, log 0 abortions per 1000 women, and a 0 percent Republican share of the general election, the expected rate of the population that comes from a different state is 7.398. The log estimates are telling as well, for a increase of 1 in log of median household income, there is an associated increase of -0.367 in the number of people from different states entering the state compared to the population in the state at the time, holding all other variables constant. For log of abortions per 1000 women the estimate is a minimal change, and it has a p_value of 0.554, leading us to not have a lot of faith in the estimate. The Republican share of the general election has a similar impact to the median household income, but is slightly less pronounced. The p_value for log of Median Household Income is closest to 0.05, meaning that our trust in that prediction is the highest.
+The intercept is 7.398, which indicates that in a state with a log Median household income of \$0, log 0 abortions per 1000 women, and a 0 percent Republican share of the general election, the expected percentage of the population that comes from a different state is 7.398.
+
+The log estimates are telling as well, for a increase of 1 in log of median household income, there is an associated increase of -0.367 in the number of people from different states entering the state compared to the population in the state at the time, holding all other variables constant.
+
+For log of abortions per 1000 women, the estimate is a minimal change, with a p-value of 0.554, leading us to have little faith in the estimate. The Republican share of the general election has a similar impact to the median household income, but is slightly less pronounced. The p-value for log of Median Household Income is closest to 0.05, meaning that our trust in that prediction is the highest.
 
 ```{r}
 immigration_lm <- lm(`Different_state_rate` ~
@@ -452,16 +464,19 @@ immigration_lm <- lm(`Different_state_rate` ~
   )
 
 get_regression_table(immigration_lm)
-
 ```
 
-This model was constructed due to the other model being unable to account for categorical variables. It is possible that some sort of dummy variable system could be constructed to include the variables in the logarithmic model, but that was not the method we settled on. The model uses a baseline of individualistic culture. From this baseline we can observe the two conditions. The differences from the baseline are telling, the moralistic cultures have the lowest predicted rate of people from different states moving in, while the traditionalistic states are very similar. Individualistic states are far and above the other two, and has a p-value that leads us to trust the result more than for the other two.
+This model was constructed because the other model was unable to account for categorical variables. It is possible that some sort of dummy variable system could be constructed to include the variables in the logarithmic model, but that was not the method we settled on.
 
-## INTERACTIVE DASHBOARD
+The model uses a baseline of individualistic culture. From this baseline we can observe the two conditions. The differences from the baseline are telling, the moralistic cultures have the lowest predicted rate of people from different states moving in, while the traditionalistic states are very similar. Individualistic states are far and above the other two, and has a p-value that leads us to trust the result more than for the other two.
 
-Link to access the dashboard: <http://127.0.0.1:4441/>
+## **INTERACTIVE DASHBOARD**
+
+The dashboard can be accessed by running it in RStudio. A screenshot is pictured below:
 
 ```{r}
+rsconnect::setAccountInfo(name='jamesono', token='11E2EC17D4FB42DE212783B0C6A4B82E', secret='kQ4wpjs36zEXbUN+4SKgeYGquvFlAoDmVVOfXoRJ')
+
 all_variables_dataset <- subset(all_variables_dataset, YEAR != 2016)
 
 usMap <- function(dataset, variable) {
@@ -522,7 +537,7 @@ server <- function(input, output) {
 shinyApp(ui = ui, server = server)
 ```
 
-## CONCLUSION
+## **CONCLUSION**
 
 We successfully gathered data from online sources regarding various cultural, political, and social factors and used it to create multiple spatial-temporal visualizations illustrating the variation in the selected factors between states, with the goal of identifying patterns in state-to-state migration. We used this data to create spatial temporal visualizations of these socioeconomic factors, a logarithmic model, and a shiny app. We found that political culture played a significant role in people’s decisions to move between states, namely the moralistic culture. Additionally, the log of median household income had a significant negative effect on interstate migration. These findings are consistent with our initial expectations, although the findings are not without their limitations.
 

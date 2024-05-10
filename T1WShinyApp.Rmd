@@ -1,0 +1,324 @@
+```{r}
+library(tidyverse)
+library(dplyr)
+library(tidyr)
+library(tmap)
+library(readr)
+library(leaflet)
+library(maps)
+library(gganimate)
+library(moderndive)
+library(ggplot2)
+library(shiny)
+```
+
+```{r}
+
+state_economic_data <- read.csv("data/state_economic_data.csv")
+
+state_abortion_data <- read.csv("data/abortions_dataset.csv")
+
+state_immigration_data <- read.csv("data/interstate_migration_data.csv")
+
+presidential_election_data <- read.csv("data/presidential_election_data.csv")
+
+state <- c("Alabama", 
+           "Alaska", 
+           "Arizona", 
+           "Arkansas",
+           "California",
+           "Colorado",
+           "Connecticut",
+           "Delaware",
+           "District of Columbia",
+           "Florida",
+           "Georgia",
+           "Hawaii",
+           "Idaho",
+           "Illinois",
+           "Indiana",
+           "Iowa",
+           "Kansas",
+           "Kentucky",
+           "Louisiana",
+           "Maine",
+           "Maryland",
+           "Massachusetts",
+           "Michigan", 
+           "Minnesota",
+           "Mississippi",
+           "Missouri",
+           "Montana",
+           "Nebraska",
+           "Nevada",
+           "New Hampshire",
+           "New Jersey",
+           "New Mexico",
+           "New York",
+           "North Carolina",
+           "North Dakota",
+           "Ohio",
+           "Oklahoma",
+           "Oregon",
+           "Pennsylvania",
+           "Rhode Island",
+           "South Carolina",
+           "South Dakota",
+           "Tennessee",
+           "Texas",
+           "Utah",
+           "Vermont",
+           "Virginia",
+           "Washington",
+           "West Virginia",
+           "Wisconsin", 
+           "Wyoming")
+
+political_culture <- c("Traditionalistic", 
+                       "Individualistic", 
+                       "Traditionalistic", 
+                       "Traditionalistic", 
+                       "Moralistic", 
+                       "Moralistic", 
+                       "Individualistic",
+                       "Individualistic", 
+                       "Individualistic", 
+                       "Traditionalistic",
+                       "Traditionalistic", 
+                       "Individualistic", 
+                       "Moralistic", 
+                       "Individualistic", 
+                       "Individualistic", 
+                       "Moralistic", 
+                       "Moralistic", 
+                       "Traditionalistic", 
+                       "Traditionalistic", 
+                       "Moralistic", 
+                       "Individualistic", 
+                       "Individualistic", 
+                       "Moralistic", 
+                       "Moralistic", 
+                       "Traditionalistic",
+                       "Individualistic",
+                       "Moralistic",
+                       "Individualistic",
+                       "Individualistic",
+                       "Moralistic",
+                       "Individualistic",
+                       "Traditionalistic",
+                       "Individualistic",
+                       "Traditionalistic",
+                       "Moralistic",
+                       "Individualistic",
+                       "Traditionalistic",
+                       "Moralistic",
+                       "Individualistic",
+                       "Individualistic",
+                       "Traditionalistic",
+                       "Moralistic", 
+                       "Traditionalistic",
+                       "Traditionalistic",
+                       "Moralistic", 
+                       "Moralistic", 
+                       "Traditionalistic", 
+                       "Moralistic", 
+                       "Traditionalistic",
+                       "Moralistic", 
+                       "Individualistic")
+
+political_culture_elazar <- data.frame(state, political_culture) %>%
+  mutate(state = tolower(state))
+
+state_abortion_data <- state_abortion_data %>%
+  slice(-(1:1)) %>%
+  rename(
+	Area = 1,
+	Number = 2,
+	Rate = 3,
+	Ratio = 4,
+	`Out-of-State (number and percentage)` = 5,
+	Year = 6
+  ) %>%
+  mutate(
+	Number = ifelse(Number %in% c("N/A"), NA, Number),
+	Rate = ifelse(Rate %in% c("N/A"), NA, Rate),
+	Ratio = ifelse(Ratio %in% c("N/A"), NA, Ratio),
+	`Out-of-State (number and percentage)` = ifelse(`Out-of-State (number and percentage)` %in% c("N/A"), NA, `Out-of-State (number and percentage)`)
+  )  %>%
+  filter(!(Number %in% c("25,619",
+                     	"30,555",
+                     	"35,398",
+                     	"37,523",
+                     	"73,815",
+                     	"89,469",
+                     	"59,854",
+                     	"27,471"))) %>%
+  mutate(Number = as.numeric(gsub(",", "", Number)),
+     	Rate = as.numeric(gsub(",", "", Rate)),
+     	Ratio = as.numeric(gsub(",", "", Ratio)),
+     	Year = as.numeric(gsub(",", "", Year))
+     	) %>%
+  mutate(Area = tolower(Area)) %>%
+  mutate(Abortions_per_1000_women = Rate) %>%
+  mutate(Abortions_per_1000_live_births = Ratio) %>%
+  mutate(`Out_of_state_abortions(number and percentage)` = `Out-of-State (number and percentage)`) %>%
+  select(Area, Abortions_per_1000_women, Abortions_per_1000_live_births, Year, `Out_of_state_abortions(number and percentage)`)
+  
+
+state_immigration_data <- state_immigration_data %>%
+   slice(-(1:6)) %>%
+  rename(
+    `Current residence in`  = 1,
+    `Population 1 year and over: Estimate` = 2,
+    `Population 1 year and over: MOE` = 3,
+    `Same house 1 year ago: Estimate` = 4,
+    `Same house 1 year ago: MOE` = 5,
+    `Same state of residence 1 year ago: Estimate` = 6,
+    `Same state of residence 1 year ago: MOE` = 7,
+    `Different state of residence 1 year ago: Estimate` = 8,
+    `Different state of residence 1 year ago: MOE` = 9,
+    Year = 10
+  ) %>%
+  slice(-(1:6)) %>%
+  mutate(
+    `Population 1 year and over: Estimate` = as.numeric(
+      gsub(",", "", `Population 1 year and over: Estimate`)
+      ),
+    `Same house 1 year ago: Estimate` = as.numeric(
+      gsub(",", "", `Same house 1 year ago: Estimate`)
+      ), 
+    `Same state of residence 1 year ago: Estimate` = as.numeric(
+      gsub(",", "", `Same state of residence 1 year ago: Estimate`)
+      ), 
+    `Different state of residence 1 year ago: Estimate` = as.numeric(
+      gsub(",", "", `Different state of residence 1 year ago: Estimate`)
+      ),
+     `Different state of residence 1 year ago: MOE` = as.numeric(
+      gsub(",", "", "+/-", `Different state of residence 1 year ago: MOE`)
+      ),
+     `Same state of residence 1 year ago: MOE` = as.numeric(
+      gsub(",", "", "+/-", `Same state of residence 1 year ago: MOE`)
+      ),
+    `Same house 1 year ago: MOE` = as.numeric(
+      gsub(",", "", "+/-", `Same house 1 year ago: MOE`)
+      ), 
+    `Population 1 year and over: MOE` = as.numeric(
+      gsub(",", "", "+/-", `Population 1 year and over: MOE`)
+      ), 
+    ) 
+
+
+state_immigration_data<-state_immigration_data %>%
+  mutate(Different_state_rate = `Population 1 year and over: Estimate` / `Different state of residence 1 year ago: Estimate`)
+
+state_economic_data <- state_economic_data %>%
+  rename(
+    State  = 1,
+    `Median Household Income` = 2,
+    Year = 3
+  ) %>%
+  mutate(
+    State = ifelse(State == "", NA, State),
+    `Median Household Income` = ifelse(`Median Household Income` == "", NA, `Median Household Income`)
+    ) %>%
+  filter(complete.cases(.)) %>%
+  mutate(`Median Household Income` = as.numeric(gsub(",", "", `Median Household Income`))) %>%
+  mutate(State = tolower(State))
+
+presidential_election_data <- presidential_election_data %>%
+  subset(select = -c(X1, X, TOTAL.VOTES, TOTAL.VOTES..)) %>%
+  mutate(
+    FEC.ID = ifelse(FEC.ID == "n/a", NA, FEC.ID),
+    `GENERAL.RESULTS` = as.numeric(gsub(",", "", `GENERAL.RESULTS`)),
+    STATE = tolower(STATE),
+    `R Share of General` = as.numeric(gsub("%", "", `GENERAL..`)) / 100
+  ) %>%
+  filter(PARTY == "R") %>%
+  select(STATE, `R Share of General`, YEAR)
+
+abortion_and_economic <- full_join(state_abortion_data, 
+             state_economic_data,
+             by = c("Area" = "State",
+                    "Year" = "Year"))
+abortion_and_economic <- abortion_and_economic %>%
+  mutate(Year = as.numeric(gsub(",", "", Year)))
+
+state_immigration_data <- state_immigration_data %>%
+  mutate(Year = as.numeric(gsub(",", "", Year))) 
+
+culture_president <- left_join(presidential_election_data, 
+                               political_culture_elazar,
+                                 by = c("STATE"= "state")) 
+everything_but_immigration <- left_join(culture_president, 
+                               abortion_and_economic,
+                    by = c("STATE" = "Area",
+                    "YEAR" = "Year"))
+
+all_variables_dataset<- full_join(everything_but_immigration, 
+            state_immigration_data,
+            by = c("STATE" = "Current residence in",
+                   "YEAR" = "Year"))
+```
+
+```{r}
+rsconnect::setAccountInfo(name='jamesono', token='11E2EC17D4FB42DE212783B0C6A4B82E', secret='kQ4wpjs36zEXbUN+4SKgeYGquvFlAoDmVVOfXoRJ')
+
+all_variables_dataset <- subset(all_variables_dataset, YEAR != 2016)
+
+usMap <- function(dataset, variable) {
+  us_map_data <- map_data("state")
+  merged_data <- merge(us_map_data, dataset, by.x = "region", by.y = "STATE", all.x = TRUE)
+
+  color_gradients <- list(
+    "R Share of General" = c("white", "deeppink4"), 
+    "Median Household Income" = c("white", "darkcyan"), 
+    "Abortions_per_1000_women" = c("white", "chartreuse4"),
+    "Abortions_per_1000_live_births" = c("white", "chartreuse4"),
+    "Same house 1 year ago: Estimate" = c("white", "chocolate4"),
+    "Population 1 year and over: Estimate" = c("white", "chocolate4"),
+    "Same state of residence 1 year ago: Estimate" = c("white", "chocolate4"),
+    "Different state of residence 1 year ago: Estimate" = c("white", "chocolate4")
+  )
+  
+  gradient_colors <- color_gradients[[variable]]
+  
+  g <- ggplot(merged_data) +
+    geom_polygon(aes(x = long, y = lat, group = group, fill = .data[[variable]]),
+                 color = "gray70", size = 0.5) +
+    scale_fill_gradient(
+      low = gradient_colors[1], 
+      high = gradient_colors[2],
+      na.value = "grey",
+      limits = range(dataset[[variable]])
+    ) +
+    theme_void() +
+    theme(legend.position = "bottom") +
+    theme(legend.key.width = unit(2, "cm"))
+  
+  return(g)
+}
+
+ui <- fluidPage(
+  titlePanel("Why Move? Finding State Attractiveness"),
+  mainPanel(
+    selectInput("variable", "Variable:", 
+                choices = colnames(all_variables_dataset)[!colnames(all_variables_dataset) %in% c("STATE", "YEAR", "Out_of_state_abortions(number and percentage)", "Different state of residence 1 year ago: MOE", "Same state of residence 1 year ago: MOE", "Same house 1 year ago: MOE", "Population 1 year and over: MOE", "political_culture")]),
+    selectInput("year", "Year:", choices = unique(all_variables_dataset$YEAR)),
+    plotOutput("us_map", width = "750px", height = "450px")
+  )
+)
+
+server <- function(input, output) {
+  output$us_map <- renderPlot({
+    subset_data <- all_variables_dataset[all_variables_dataset$YEAR == input$year, ]
+    
+    if (nrow(subset_data) == 0) {
+      return("No data available for the selected year.")
+    }
+    
+    usMap(subset_data, input$variable)
+  })
+}
+
+shinyApp(ui = ui, server = server)
+```

@@ -1,1 +1,1 @@
-This folder will contain the data for our project.
+This folder contains the data for our project.
